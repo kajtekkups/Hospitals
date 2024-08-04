@@ -1,2 +1,3 @@
 # Hospitals
-Program is finding optimal path from multiply hospitals to patients around the city
+
+Software tool for mananing city ambulance infrostructure, based on TABU search alghoritm.
