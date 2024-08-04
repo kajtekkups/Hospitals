@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="nlohmann_json"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;CMake Files\json\;CMake Files\json\cmake\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="G:/Program Files/semestr5/Badania operacyjne 2/Projekt/Hospitals/cmake-build-debug-mingw/json"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="G:/Program Files/semestr3/JetBrains/CLion 2021.3.3/bin/mingw/bin/mingw32-make.exe -f &quot;G:/Program Files/semestr5/Badania operacyjne 2/Projekt/Hospitals/cmake-build-debug-mingw/json/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="G:/Program Files/semestr3/JetBrains/CLion 2021.3.3/bin/mingw/bin/mingw32-make.exe -f &quot;G:/Program Files/semestr5/Badania operacyjne 2/Projekt/Hospitals/cmake-build-debug-mingw/json/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="G:/Program Files/semestr3/JetBrains/CLion 2021.3.3/bin/mingw/bin/mingw32-make.exe -f &quot;G:/Program Files/semestr5/Badania operacyjne 2/Projekt/Hospitals/cmake-build-debug-mingw/json/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="G:/Program Files/semestr3/JetBrains/CLion 2021.3.3/bin/mingw/bin/mingw32-make.exe -f &quot;G:/Program Files/semestr5/Badania operacyjne 2/Projekt/Hospitals/cmake-build-debug-mingw/json/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="G:/Program Files/semestr5/Badania operacyjne 2/Projekt/Hospitals/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+		<Unit filename="G:/Program Files/semestr5/Badania operacyjne 2/Projekt/Hospitals/json/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\json\"/>
+		</Unit>
+		<Unit filename="G:/Program Files/semestr5/Badania operacyjne 2/Projekt/Hospitals/json/cmake/config.cmake.in">
+			<Option virtualFolder="CMake Files\json\cmake\"/>
+		</Unit>
+		<Unit filename="G:/Program Files/semestr5/Badania operacyjne 2/Projekt/Hospitals/json/cmake/nlohmann_jsonConfigVersion.cmake.in">
+			<Option virtualFolder="CMake Files\json\cmake\"/>
+		</Unit>
+		<Unit filename="G:/Program Files/semestr5/Badania operacyjne 2/Projekt/Hospitals/json/cmake/pkg-config.pc.in">
+			<Option virtualFolder="CMake Files\json\cmake\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>

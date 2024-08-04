@@ -1,0 +1,17 @@
+Zamieściłem tutaj kolejność specjalizacji, śmiało dodawajcie jeśli chcecie,
+stwierdziłem że zamiast pisać złamana noga, ręka, wylane oko czy jelita na wierzchu
+lepiej bedzie okreslic sama potrzebna specjalizacje i jej zaawansowanie
+
+1 - Ortopedia
+2 - Okulistyka
+3 - Neurologia
+4 - Chirurgia
+5 - Kardiologia
+7 - Pediatria
+8 - Endokrynologia
+9 - Geriatria
+10 - Ginekologia
+11 - Urologia
+12 - Psychiatria
+13 - Oparzenia
+14 - Gastroenterologia
