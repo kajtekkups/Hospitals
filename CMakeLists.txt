@@ -1,24 +1,17 @@
-cmake_minimum_required(VERSION 3.1)
+cmake_minimum_required(VERSION 3.10)
 project(Hospitals)
 
 set(CMAKE_CXX_STANDARD 17)
 
-# Dodaj wszystkie pliki źródłowe z folderu 'src'
-file(GLOB SRC_FILES src/*.cpp)
+# add include folder path
+include_directories(${PROJECT_SOURCE_DIR}/include)
 
-# Dodaj wszystkie pliki nagłówkowe z folderu 'include'
-file(GLOB HEADER_FILES include/*.hpp)
+# add all source files
+file(GLOB SRC_FILES ./src/*.cpp)
 
-# Dodaj biblioteke obslugujaca pliki json
-add_subdirectory(json)
-include_directories(./json/include)
+# add json library
+add_subdirectory(./libraries/json)
+include_directories(./libraries/json/include)
 
-# Dodaj pliki źródłowe i nagłówkowe do projektu
-add_executable(Hospitals main.cpp include/tabu.hpp scr/tabu.cpp include/structures.hpp
-        scr/structures.cpp include/window.hpp scr/window.cpp
-        main.cpp
-)
-
-# Dodaj ścieżki do folderów include
-target_include_directories(Hospitals PRIVATE include)
+add_executable(Hospitals main.cpp ${SRC_FILES})
 

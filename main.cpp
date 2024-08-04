@@ -1,25 +1,9 @@
 #include "window.hpp"
 #include <iostream>
 #include <tabu.hpp>
-#include <cfloat>
 #include <chrono>
 
 //pamietac o zmianie AMBULANCE_NUMBER
-
-//dane wejsciowe z GUI
-int max_liczba_iteracji;
-int kryterium_aspiracji;
-int dlugosc_listy_tabu;
-std::vector<int> dobor_sasiedztwa = {1, 1, 1, 1};
-
-//dane wyjsciowe do GUI
-int act_liczba_iteracji = 0;
-int liczba_uzyc_kryterium_aspiracji = 0;
-int czas_wykonania = 0;
-int iteracja_z_najlepszym_wynikiem;
-double najlepszy_wynik = DBL_MAX;
-int wartosci_funkcji[10000];
-
 
 int Patient::pat_id = 0;
 int Ambulance::amb_id = 0;
