@@ -278,9 +278,9 @@ std::map<Ambulance*, int> NeighbourSelect(TabuList Tabu, std::vector<Ambulance*>
             std::map<Ambulance, int> pair2 = {{*solutions[ambulance_idx2], pat2_id}};
 
             while (Tabu.check_if_in_tabu(pair1, pair2)){
-                if (kryterium_aspiracji != 0){
+                if (GUI::aspiration_criterion != 0){
                     swap(*solutions[ambulance_idx1], *solutions[ambulance_idx2], swap_amp1_idx, swap_amp2_idx);
-                    if (cost - ObjectiveFunction(solutions) >  kryterium_aspiracji){
+                    if (cost - ObjectiveFunction(solutions) >  GUI::aspiration_criterion){
                         apiration_usage_counter++;
                         swap(*solutions[ambulance_idx1], *solutions[ambulance_idx2], swap_amp1_idx, swap_amp2_idx);
                         neigh_to_swap.insert(std::make_pair(solutions[ambulance_idx1],swap_amp1_idx));
@@ -340,9 +340,9 @@ std::map<Ambulance*, int> NeighbourSelect(TabuList Tabu, std::vector<Ambulance*>
                 std::map<Ambulance, int> pair1 = {{*solutions[ambulance_idx1], pat_idx1}};
                 std::map<Ambulance, int> pair2 = {{*solutions[ambulance_idx2], pat_idx2}};
 
-                if (kryterium_aspiracji != 0){
+                if (GUI::aspiration_criterion != 0){
                     swap(*solutions[ambulance_idx1], *solutions[ambulance_idx2], pat_idx1, pat_idx2);
-                    if (Tabu.check_if_in_tabu(pair1, pair2) && (cost - ObjectiveFunction(solutions)) > kryterium_aspiracji){
+                    if (Tabu.check_if_in_tabu(pair1, pair2) && (cost - ObjectiveFunction(solutions)) > GUI::aspiration_criterion){
                         apiration_usage_counter++;
                         swap(*solutions[ambulance_idx1], *solutions[ambulance_idx2], pat_idx1, pat_idx2);
                         neigh_to_swap.insert(std::make_pair(solutions[ambulance_idx1],pat_idx1));
@@ -391,9 +391,9 @@ std::map<Ambulance*, int> NeighbourSelect(TabuList Tabu, std::vector<Ambulance*>
                 std::map<Ambulance, int> pair1 = {{*solutions[ambulance_idx1], pat_idx1}};
                 std::map<Ambulance, int> pair2 = {{*solutions[ambulance_idx2], pat_idx2}};
 
-                if (kryterium_aspiracji != 0){
+                if (GUI::aspiration_criterion != 0){
                     swap(*solutions[ambulance_idx1], *solutions[ambulance_idx2], pat_idx1, pat_idx2);
-                    if (Tabu.check_if_in_tabu(pair1, pair2) && (cost - ObjectiveFunction(solutions)) > kryterium_aspiracji){
+                    if (Tabu.check_if_in_tabu(pair1, pair2) && (cost - ObjectiveFunction(solutions)) > GUI::aspiration_criterion){
                         apiration_usage_counter++;
                         swap(*solutions[ambulance_idx1], *solutions[ambulance_idx2], pat_idx1, pat_idx2);
                         neigh_to_swap.insert(std::make_pair(solutions[ambulance_idx1],pat_idx1));
@@ -445,9 +445,9 @@ std::map<Ambulance*, int> NeighbourSelect(TabuList Tabu, std::vector<Ambulance*>
                     std::map<Ambulance, int> pair1 = {{*solutions[ambulance_idx1], pat_idx1}};
                     std::map<Ambulance, int> pair2 = {{*solutions[ambulance_idx2], pat_idx2}};
 
-                    if (kryterium_aspiracji != 0){
+                    if (GUI::aspiration_criterion != 0){
                         swap(*solutions[ambulance_idx1], *solutions[ambulance_idx2], pat_idx1, pat_idx2);
-                        if (Tabu.check_if_in_tabu(pair1, pair2) && (cost - ObjectiveFunction(solutions)) > kryterium_aspiracji){
+                        if (Tabu.check_if_in_tabu(pair1, pair2) && (cost - ObjectiveFunction(solutions)) > GUI::aspiration_criterion){
                             apiration_usage_counter++;
                             swap(*solutions[ambulance_idx1], *solutions[ambulance_idx2], pat_idx1, pat_idx2);
                             neigh_to_swap.insert(std::make_pair(solutions[ambulance_idx1],pat_idx1));
@@ -492,9 +492,9 @@ std::map<Ambulance*, int> NeighbourSelect(TabuList Tabu, std::vector<Ambulance*>
                     std::map<Ambulance, int> pair1 = {{*solutions[ambulance_idx1], pat_idx1}};
                     std::map<Ambulance, int> pair2 = {{*solutions[ambulance_idx2], pat_idx2}};
 
-                    if (kryterium_aspiracji != 0){
+                    if (GUI::aspiration_criterion != 0){
                         swap(*solutions[ambulance_idx1], *solutions[ambulance_idx2], pat_idx1, pat_idx2);
-                        if (Tabu.check_if_in_tabu(pair1, pair2) && (cost - ObjectiveFunction(solutions)) > kryterium_aspiracji){
+                        if (Tabu.check_if_in_tabu(pair1, pair2) && (cost - ObjectiveFunction(solutions)) > GUI::aspiration_criterion){
                             apiration_usage_counter++;
                             swap(*solutions[ambulance_idx1], *solutions[ambulance_idx2], pat_idx1, pat_idx2);
                             neigh_to_swap.insert(std::make_pair(solutions[ambulance_idx1],pat_idx1));
@@ -548,7 +548,7 @@ void copy_ambulance_vector(std::vector<Ambulance*> orginal, std::vector<Ambulanc
 //algorytm tabu
 std::vector<Ambulance*> TabuSearch(){
     //tworzenie tabu listy
-    TabuList tabu_l = TabuList(dlugosc_listy_tabu);
+    TabuList tabu_l = TabuList(GUI::tabu_list_length);
     //Inicjalizowanie pierwszego rozwiązania
     create_first_solution();
     //tu trzeba bedzie sprawdzic czy kopiuje czy bedzie sie zmienial razem z ambulacne list
@@ -560,8 +560,8 @@ std::vector<Ambulance*> TabuSearch(){
     //liczba iteracji bez poprawy wyniku
     int max_iteration = 0;
 
-    for (int i = 0; i < max_liczba_iteracji; i++){
-        act_liczba_iteracji++;
+    for (int i = 0; i < max_iteration; i++){
+        GUI::iterations_number++;
 
         int aspiration_on1 = 0;
         int aspiration_on2 = 0;
@@ -626,16 +626,16 @@ std::vector<Ambulance*> TabuSearch(){
 
         // 4. wyeliminuj rozwiazania sasiedztw nie branych pod uwage
         //    (moglo by to byc bardziej optymalne, ale jest to tymczasowe rozwiazanie oszczedzajace czas)
-        if(!dobor_sasiedztwa[0]){
+        if(!GUI::neighborhood_selection_method[0]){
             cost_temp_solution1 = DBL_MAX;
         }
-        if(!dobor_sasiedztwa[1]){
+        if(!GUI::neighborhood_selection_method[1]){
             cost_temp_solution2 = DBL_MAX;
         }
-        if(!dobor_sasiedztwa[2]){
+        if(!GUI::neighborhood_selection_method[2]){
             cost_temp_solution3 = DBL_MAX;
         }
-        if(!dobor_sasiedztwa[3]){
+        if(!GUI::neighborhood_selection_method[3]){
             cost_temp_solution4 = DBL_MAX;
         }
         
@@ -663,23 +663,23 @@ std::vector<Ambulance*> TabuSearch(){
         }
 
         if (final_aspiration == 1){
-            liczba_uzyc_kryterium_aspiracji++;
+            GUI::aspiration_criterion_use_number++;
         }
 
         // 6. jezeli jest to najlepsze rozwiazanie, zapisz je do wyniku algorytmu
-        if(najlepszy_wynik > najlniejsza_wartosc_funkcji){
+        if(GUI::best_result > najlniejsza_wartosc_funkcji){
             copy_ambulance_vector(global_solution, ambulance_list);
             //na potrzeby GUI
-            najlepszy_wynik = najlniejsza_wartosc_funkcji;
-            iteracja_z_najlepszym_wynikiem = act_liczba_iteracji;
+            GUI::best_result = najlniejsza_wartosc_funkcji;
+            GUI::best_result_iteration = GUI::iterations_number;
         }
 
         // 7. zapisz dane na potrzeby GUI
-        wartosci_funkcji[act_liczba_iteracji-1] = (int)najlniejsza_wartosc_funkcji;
+        GUI::single_results[GUI::iterations_number-1] = (int)najlniejsza_wartosc_funkcji;
 
 
         // 8. sprawdz czy przez ostatnie x iteracji byla poprawa (czy algorytm utknal?)
-        if(najlepszy_wynik == najlniejsza_wartosc_funkcji){
+        if(GUI::best_result == najlniejsza_wartosc_funkcji){
             max_iteration++;
         }
         if(max_iteration == 1000){

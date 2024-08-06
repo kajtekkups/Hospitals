@@ -2,6 +2,7 @@
 #define HOSPITALS_TABU_HPP
 
 #include "structures.hpp"
+#include "GUI.hpp"
 #include <map>
 #include <utility>
 #include <vector>
@@ -33,17 +34,6 @@ std::vector<Ambulance*> TabuSearch();
 
 void test_zmiennych_z_gui();
 
-//zmienne uzywane w tabu
-extern int max_liczba_iteracji;
-extern int kryterium_aspiracji;
-extern int dlugosc_listy_tabu;
-extern std::vector<int> dobor_sasiedztwa;
-
-extern int act_liczba_iteracji;
-extern int liczba_uzyc_kryterium_aspiracji;
-extern int iteracja_z_najlepszym_wynikiem;
-extern double najlepszy_wynik;
-extern int wartosci_funkcji[10000];
 
 //lista wszsystkich szpitali, trzeba ja kiedys stworzyc
 extern std::vector<Hospital*> hospital_list;
@@ -53,6 +43,9 @@ extern std::vector<Patient*> patients_list;
 
 //lista wszystkich karetek
 extern std::vector<Ambulance*> ambulance_list;
+
+//Map of the city: higher the number is, overall time is slower, 0 means no passage
+extern std::vector<std::vector<int>> city;
 
 
 #endif //HOSPITALS_TABU_HPP

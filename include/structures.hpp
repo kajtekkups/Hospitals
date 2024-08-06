@@ -1,5 +1,6 @@
 #ifndef HOSPITALS_STRUCTURES_HPP
 #define HOSPITALS_STRUCTURES_HPP
+
 #include <utility>
 #include <vector>
 #include <iostream>
