@@ -1,11 +1,22 @@
 #ifndef HOSPITALS_TABU_HPP
 #define HOSPITALS_TABU_HPP
 
-#include "structures.hpp"
+#include "GUI.hpp"
+#include "hospital.hpp"
+#include "Ambulance.hpp"
+#include "Patient.hpp"
 #include <map>
 #include <utility>
 #include <vector>
 #include <cfloat>
+
+#define CITY_LENGTH 25
+#define CITY_HEIGTH 50
+#define AMBULANCE_NUMBER 8  //how many ambulances are in town
+
+struct Point {
+    int x, y, distance;
+};
 
 //wektor, ktory ma swoja dlugosc, po przekroczeniu dlugosci zaczyna nadpisywac
 //elementy zaczynajac od poczatku, wektor ma dlugosc dwa razy wieksza niz podana
@@ -33,17 +44,6 @@ std::vector<Ambulance*> TabuSearch();
 
 void test_zmiennych_z_gui();
 
-//zmienne uzywane w tabu
-extern int max_liczba_iteracji;
-extern int kryterium_aspiracji;
-extern int dlugosc_listy_tabu;
-extern std::vector<int> dobor_sasiedztwa;
-
-extern int act_liczba_iteracji;
-extern int liczba_uzyc_kryterium_aspiracji;
-extern int iteracja_z_najlepszym_wynikiem;
-extern double najlepszy_wynik;
-extern int wartosci_funkcji[10000];
 
 //lista wszsystkich szpitali, trzeba ja kiedys stworzyc
 extern std::vector<Hospital*> hospital_list;
@@ -53,6 +53,9 @@ extern std::vector<Patient*> patients_list;
 
 //lista wszystkich karetek
 extern std::vector<Ambulance*> ambulance_list;
+
+//Map of the city: higher the number is, overall time is slower, 0 means no passage
+extern std::vector<std::vector<int>> city;
 
 
 #endif //HOSPITALS_TABU_HPP
