@@ -1,12 +1,22 @@
 #ifndef HOSPITALS_TABU_HPP
 #define HOSPITALS_TABU_HPP
 
-#include "structures.hpp"
 #include "GUI.hpp"
+#include "hospital.hpp"
+#include "Ambulance.hpp"
+#include "Patient.hpp"
 #include <map>
 #include <utility>
 #include <vector>
 #include <cfloat>
+
+#define CITY_LENGTH 25
+#define CITY_HEIGTH 50
+#define AMBULANCE_NUMBER 8  //how many ambulances are in town
+
+struct Point {
+    int x, y, distance;
+};
 
 //wektor, ktory ma swoja dlugosc, po przekroczeniu dlugosci zaczyna nadpisywac
 //elementy zaczynajac od poczatku, wektor ma dlugosc dwa razy wieksza niz podana

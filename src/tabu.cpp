@@ -116,11 +116,11 @@ int BFS(std::vector<std::vector<int>>& grid, const Point& start, const Point& en
 
 Hospital* get_best_hospital(Patient *pat){
     std::vector<Hospital*> spec_hospital;
-    std::map<std::string, int> patient_injuries = pat -> get_injuries_list();
+    std::map<std::string, int> patient_injuries = pat -> getInjuriesList();
 
     for (auto hospital : hospital_list){
         int correct = 1;
-        std::map<std::string, int> spec = hospital->get_spec_list();
+        std::map<std::string, int> spec = hospital->getSpecializationList();
         for (auto injurie : patient_injuries){
             if (spec[injurie.first] < patient_injuries[injurie.first]){
                 correct = 0;
@@ -136,8 +136,8 @@ Hospital* get_best_hospital(Patient *pat){
     Hospital* besthospital = spec_hospital[0];
 
     for (auto hospital : spec_hospital){
-        Point hosp_loc = Point{hospital->get_hosp_location_x(), hospital->get_hosp_location_y(), 0};
-        Point patient_loc = Point{pat->get_location_x(), pat->get_location_y(), 0};
+        Point hosp_loc = Point{hospital->getHospitalLocationX(), hospital->getHospitalLocationY(), 0};
+        Point patient_loc = Point{pat->getLocationX(), pat->getLocationY(), 0};
         int travel_time = BFS(city, patient_loc, hosp_loc);
         if (min_time > travel_time) {
             besthospital = hospital;
@@ -200,8 +200,8 @@ void swap(Ambulance &amb1, Ambulance &amb2, int patient1_idx, int patient2_idx) 
     order1[patient1_idx] = order2[patient2_idx];
     order2[patient2_idx] = patient_temp;
 
-    amb1.new_order(order1);
-    amb2.new_order(order2);
+    amb1.newOrder(order1);
+    amb2.newOrder(order2);
 }
 
 
@@ -217,26 +217,26 @@ void swap(Ambulance &amb1, Ambulance &amb2, int patient1_idx, int patient2_idx) 
 double ObjectiveFunction(std::vector<Ambulance*> const &solution){
     double cost;
     for (auto ambulance : solution){
-        Hospital* primaty_hospital = ambulance -> get_actual_hospital();
+        Hospital* primaty_hospital = ambulance -> getActualHospital();
         int sum_time = 0;
         for (auto patient : ambulance->get_order()){
             if (patient == nullptr){
                 break;
             }
 //uwzglednic jeszcze czas jaki pacjent czeka
-            int p_time = patient->get_time();
-            Point pat_loc = {patient->get_location_x(), patient ->get_location_y(), 0};
-            Point amb_loc = {ambulance->get_amb_location_x(), ambulance->get_amb_location_y(), 0};
+            int p_time = patient->getTime();
+            Point pat_loc = {patient->getLocationX(), patient ->getLocationY(), 0};
+            Point amb_loc = {ambulance->getAmbulanceLocationX(), ambulance->getAmbulanceLocationY(), 0};
             int amb_to_pat_time = BFS(city, amb_loc, pat_loc);
             Hospital* best_hospital = get_best_hospital(patient);
-            Point hos_loc = {best_hospital->get_hosp_location_x(), best_hospital->get_hosp_location_y(), 0};
+            Point hos_loc = {best_hospital->getHospitalLocationX(), best_hospital->getHospitalLocationY(), 0};
             int pat_to_hosp_time = BFS(city, pat_loc, hos_loc);
-            int patient_priority = patient->get_priority();
+            int patient_priority = patient->getPriority();
             cost = cost + patient_priority * (p_time + amb_to_pat_time) + pat_to_hosp_time + sum_time;
-            ambulance->change_hospital(best_hospital);
+            ambulance->changeHospital(best_hospital);
             sum_time = p_time + amb_to_pat_time + pat_to_hosp_time;
         }
-        ambulance->change_hospital(primaty_hospital);
+        ambulance->changeHospital(primaty_hospital);
     }
     return cost;
 }
@@ -264,12 +264,12 @@ std::map<Ambulance*, int> NeighbourSelect(TabuList Tabu, std::vector<Ambulance*>
             int pat1_id;
             int pat2_id;
             try{
-                pat1_id = order1[swap_amp1_idx] -> get_patient_id();
+                pat1_id = order1[swap_amp1_idx] -> getPatientId();
             } catch (const std::exception& e) {
                 pat1_id = 0;
             }
             try{
-                pat2_id = order2[swap_amp2_idx] -> get_patient_id();
+                pat2_id = order2[swap_amp2_idx] -> getPatientId();
             } catch (const std::exception& e) {
                 pat2_id = 0;
             }
@@ -293,13 +293,13 @@ std::map<Ambulance*, int> NeighbourSelect(TabuList Tabu, std::vector<Ambulance*>
                     }}
                 if (order1[swap_amp1_idx + 1] != nullptr){
                     swap_amp1_idx++;
-                    pat1_id = order1[swap_amp1_idx] -> get_patient_id();
+                    pat1_id = order1[swap_amp1_idx] -> getPatientId();
                     pair1 = {{*solutions[ambulance_idx1], pat1_id}};
 
                 }
                 else if (order2[swap_amp2_idx + 1] != nullptr){
                     swap_amp2_idx++;
-                    pat2_id = order2[swap_amp2_idx] -> get_patient_id();
+                    pat2_id = order2[swap_amp2_idx] -> getPatientId();
                     pair2 = {{*solutions[ambulance_idx2], pat2_id}};
                 }
             }
@@ -331,8 +331,8 @@ std::map<Ambulance*, int> NeighbourSelect(TabuList Tabu, std::vector<Ambulance*>
                     ambulance_idx2 = rand() % AMBULANCE_NUMBER;
                 }
 
-                numb_of_pat_idx1 = solutions[ambulance_idx1]->get_patient_count();  //liczba pacjentów dla wybranych losowo karetek
-                numb_of_pat_idx2 = solutions[ambulance_idx2]->get_patient_count();
+                numb_of_pat_idx1 = solutions[ambulance_idx1]->getPatientCount();  //liczba pacjentów dla wybranych losowo karetek
+                numb_of_pat_idx2 = solutions[ambulance_idx2]->getPatientCount();
 
                 pat_idx1 = rand() % numb_of_pat_idx1;  //wybór losowych pacjentów dla wybranych losowo karetek
                 pat_idx2 = rand() % numb_of_pat_idx2;
@@ -385,8 +385,8 @@ std::map<Ambulance*, int> NeighbourSelect(TabuList Tabu, std::vector<Ambulance*>
                 }
 
 
-                pat_idx1 = solutions[ambulance_idx1]->get_patient_count() - 1;
-                pat_idx2 = solutions[ambulance_idx2]->get_patient_count();
+                pat_idx1 = solutions[ambulance_idx1]->getPatientCount() - 1;
+                pat_idx2 = solutions[ambulance_idx2]->getPatientCount();
 
                 std::map<Ambulance, int> pair1 = {{*solutions[ambulance_idx1], pat_idx1}};
                 std::map<Ambulance, int> pair2 = {{*solutions[ambulance_idx2], pat_idx2}};
@@ -436,8 +436,8 @@ std::map<Ambulance*, int> NeighbourSelect(TabuList Tabu, std::vector<Ambulance*>
                         ambulance_idx2 = rand() % AMBULANCE_NUMBER;
                     }
 
-                    numb_of_pat_idx1 = solutions[ambulance_idx1]->get_patient_count();  //liczba pacjentów dla wybranych losowo karetek
-                    numb_of_pat_idx2 = solutions[ambulance_idx2]->get_patient_count();
+                    numb_of_pat_idx1 = solutions[ambulance_idx1]->getPatientCount();  //liczba pacjentów dla wybranych losowo karetek
+                    numb_of_pat_idx2 = solutions[ambulance_idx2]->getPatientCount();
 
                     pat_idx1 = rand() % numb_of_pat_idx1;  //wybór losowych pacjentów dla wybranych losowo karetek
                     pat_idx2 = rand() % numb_of_pat_idx2;
@@ -486,8 +486,8 @@ std::map<Ambulance*, int> NeighbourSelect(TabuList Tabu, std::vector<Ambulance*>
                     }
 
 
-                    pat_idx1 = solutions[ambulance_idx1]->get_patient_count() - 1;
-                    pat_idx2 = solutions[ambulance_idx2]->get_patient_count();
+                    pat_idx1 = solutions[ambulance_idx1]->getPatientCount() - 1;
+                    pat_idx2 = solutions[ambulance_idx2]->getPatientCount();
 
                     std::map<Ambulance, int> pair1 = {{*solutions[ambulance_idx1], pat_idx1}};
                     std::map<Ambulance, int> pair2 = {{*solutions[ambulance_idx2], pat_idx2}};

@@ -112,7 +112,7 @@ int main(){
             if (pacjent == nullptr){
                 break;
             }
-            std::cout << "Ambulans " << index_ambulansu << " Pacjent: " << pacjent->get_patient_id() << std::endl;
+            std::cout << "Ambulans " << index_ambulansu << " Pacjent: " << pacjent->getPatientId() << std::endl;
         }
         index_ambulansu++;
     }
