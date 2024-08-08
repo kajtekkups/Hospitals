@@ -5,9 +5,11 @@
 #include <iostream>
 #include <map>
 
+typedef int patient_id;
+
 class Patient{
 public:
-    int static pat_id;
+    patient_id static pat_id;
 
     //injuries jako lista liczb, jesli dana specjalizacja jest potrzebna to wpisujemy jej wymagany poziom,
     //jesli nie to 0,lista o stalym rozmiarze, x, y to wspolrzedne macierzy miasta
@@ -31,10 +33,10 @@ public:
 
     std::map<std::string, int> getInjuriesList(){return patient_injuries_;}
 
-    int getPatientId(){return id_;}
+    patient_id getPatientId() const {return id_;}
 
 private:
-    int id_;
+    patient_id id_;
     int x_;
     int y_;
     int time_;

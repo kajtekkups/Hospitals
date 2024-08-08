@@ -12,16 +12,16 @@ public:
             specialization_.insert(std::make_pair(specialization[i], value[i]));
         }
     };
-    int getHospitalLocationX(){return x_;}
+    int getHospitalLocationX() const {return x_;}
 
-    int getHospitalLocationY(){return y_;}
+    int getHospitalLocationY() const {return y_;}
 
     std::map<std::string, int> getSpecializationList(){return specialization_;}
 
 private:
     // hospital cordinates
-    int x_;
-    int y_;
+    const int x_;
+    const int y_;
     //list of specialization, hospital supports
     std::map<std::string, int> specialization_;
 };

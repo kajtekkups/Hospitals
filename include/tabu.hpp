@@ -1,44 +1,45 @@
 #ifndef HOSPITALS_TABU_HPP
 #define HOSPITALS_TABU_HPP
 
-#include "GUI.hpp"
+
 #include "hospital.hpp"
 #include "Ambulance.hpp"
 #include "Patient.hpp"
+#include "GUI.hpp"
 #include <map>
-#include <utility>
 #include <vector>
-#include <cfloat>
 
 #define CITY_LENGTH 25
 #define CITY_HEIGTH 50
 #define AMBULANCE_NUMBER 8  //how many ambulances are in town
 
+typedef int swap_patient_index;  //identifies patient of particular ambulance, that is going to be swapt
+
+
 struct Point {
     int x, y, distance;
 };
 
-//wektor, ktory ma swoja dlugosc, po przekroczeniu dlugosci zaczyna nadpisywac
-//elementy zaczynajac od poczatku, wektor ma dlugosc dwa razy wieksza niz podana
-//w tabu, przy jednej iteracji dodaje dwie pary do listy:
-// {karetka1, index1_przeniesionego_pacjenta}, {karetka2, index2_przeniesionego_pacjenta}
-
+/***************************************
+ * TabuList is a list, that holds
+ ************************************/
 class TabuList{
 public:
-    TabuList(int size): size_(size * 2){}
+    explicit TabuList(int size): tabu_list_size_(size * 2){}
 
 //dodaje dwie pary do listy tabu, jesli jest zapelniona dodaje od poczatku
-    void update_tabu(std::map<Ambulance, int> const &pair1, std::map<Ambulance, int> const &pair2);
+    void update_tabu(std::pair<Ambulance, swap_patient_index> const &pair1, std::pair<Ambulance, swap_patient_index> const &pair2);
 
-    int check_if_in_tabu(std::map<Ambulance, int> const &pair1, std::map<Ambulance, int> const &pair2);
+    int check_if_in_tabu(std::pair<Ambulance, swap_patient_index> const &pair1, std::pair<Ambulance, swap_patient_index> const &pair2);
 
 private:
-    int size_;
-    std::vector<std::map<Ambulance, int>> tabu_l;
+    int tabu_list_size_;
+    std::vector<std::tuple<Ambulance, patient_id, swap_patient_index>> tabu_l;
     int save_index = 0;
 };
 
-void copy_ambulance_vector(std::vector<Ambulance*> orginal, std::vector<Ambulance*>& copy);
+
+void copy_ambulance_vector(std::vector<Ambulance*> orginal, std::vector<Ambulance*>& to_delete);
 
 std::vector<Ambulance*> TabuSearch();
 

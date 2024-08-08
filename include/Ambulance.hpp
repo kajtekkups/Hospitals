@@ -43,6 +43,8 @@ public:
     //zwraca ilosc pacjentów
     int getPatientCount(){return patient_count;};
 
+    patient_id getPatientID(int patient_index) const {return order_[patient_index]->getPatientId();}
+
     void newOrder(std::vector<Patient*> ord){order_ = std::move(ord);}
 
     int getAmbulanceLocationX(){return actual_hospital_ -> getHospitalLocationX();}
@@ -58,7 +60,7 @@ public:
 
 private:
     int id;
-    int patient_count = 0; //Patients in a row
+    int patient_count = 0; //Patients in a que
     std::vector<Patient*> order_;
     Hospital* actual_hospital_;
 

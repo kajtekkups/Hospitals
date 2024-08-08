@@ -56,10 +56,10 @@ namespace GUI {
         nlohmann::json data_to_save;
 
         //save data to JSON object
-        data_to_save["liczba_iteracji"] = iterations_number;
-        data_to_save["liczba_uzyc_kryt_aspiracji"] = aspiration_criterion_use_number;
+        data_to_save["iterations_number"] = iterations_number;
+        data_to_save["aspiration_criterion_use_number"] = aspiration_criterion_use_number;
         data_to_save["execution_time"] = execution_time;
-        data_to_save["iteracja_najlepszy_wynik"] =  best_result_iteration;
+        data_to_save["best_result_iteration"] =  best_result_iteration;
         data_to_save["best_result"] =  static_cast<int>(best_result);
         data_to_save["single_results"] = single_results;
 

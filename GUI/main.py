@@ -11,18 +11,18 @@ import subprocess
 
 class GUI(tk.Tk):
     def __init__(self):
-        self.data_to_save = {"max_liczba_iteracji": None,
-                             "kryterium_aspiracji": None,
-                             "dlugosc_listy_tabu": None,
-                             "dobor_sasiedztwa": None} #dane zapisywane w .json
+        self.data_to_save = {"max_iteration": None,
+                             "aspiration_criterion": None,
+                             "tabu_list_length": None,
+                             "neighborhood_selection_method": None} #dane zapisywane w .json
 
-        self.input_data = {"liczba_iteracji": None,
-                           "liczba_uzyc_kryteriow_aspiracji": None,
-                           "czas_obliczen": None,
-                           "iteracja_znalazla_wynik": None,
+        self.input_data = {"iterations_number": None,
+                           "aspiration_criterion_use_number": None,
+                           "execution_time": None,
+                           "best_result_iteration": None,
                            "optymalne_rozwiazanie": None,
-                           "kolejne_wartosci_funkcji": None,
-                           "najlepszy_wynik": None}
+                           "single_results": None,
+                           "best_result": None}
 
         self.sciezka_do_exe = r'../cmake-build-debug-mingw/Hospitals.exe'
         self.sciezka_do_wynikow = r'wyniki.json'
@@ -119,11 +119,11 @@ class GUI(tk.Tk):
     def uruchom_algorytm(self):
         # 1. zapisz dane
         try:
-            self.data_to_save["max_liczba_iteracji"] = int(self.entry_max_liczba_iteracji.get())
-            self.data_to_save["kryterium_aspiracji"] = int(self.entry_kryterium_aspiracji.get())
-            self.data_to_save["dlugosc_listy_tabu"] = int(self.entry_dlugosc_listy_tabu.get())
+            self.data_to_save["max_iteration"] = int(self.entry_max_liczba_iteracji.get())
+            self.data_to_save["aspiration_criterion"] = int(self.entry_kryterium_aspiracji.get())
+            self.data_to_save["tabu_list_length"] = int(self.entry_dlugosc_listy_tabu.get())
             print(self.wybierz_sasiedztwo())
-            self.data_to_save["dobor_sasiedztwa"] = self.wybierz_sasiedztwo()
+            self.data_to_save["neighborhood_selection_method"] = self.wybierz_sasiedztwo()
             self.save_data()
         except ValueError:
             print("To nie jest poprawna liczba całkowita.")
@@ -247,13 +247,12 @@ class GUI(tk.Tk):
             with open(self.sciezka_do_wynikow, 'r') as plik_json:
                 dane = json.load(plik_json)
 
-            self.wartosci_funkcji = dane["wartosci_funkcji"]
-            self.liczba_iteracji = dane["liczba_iteracji"]
-            self.liczba_uzyc_kryt_aspiracji = dane["liczba_uzyc_kryt_aspiracji"]
-            self.czas_wykonania = dane["czas_wykonania"]
-            self.iteracja_najlepszy_wynik = dane["iteracja_najlepszy_wynik"]
-            self.najlepszy_wynik = dane["najlepszy_wynik"]
-            # self.optymalne_rozwiazanie = dane["optymalne_rozwiazanie"]
+            self.liczba_iteracji = dane["iterations_number"]
+            self.liczba_uzyc_kryt_aspiracji = dane["aspiration_criterion_use_number"]
+            self.czas_wykonania = dane["execution_time"]
+            self.iteracja_najlepszy_wynik = dane["best_result_iteration"]
+            self.najlepszy_wynik = dane["best_result"]
+            self.wartosci_funkcji = dane["single_results"]
 
 
         except Exception as e:
