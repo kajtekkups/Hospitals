@@ -279,9 +279,11 @@ std::tuple<std::map<Ambulance, swap_patient_index>, operation_cost> FirstNeighbo
     return std::make_tuple(neigh_swaped, first_neighbour_cost);
 }
 
+
+// move patient from one ambulance to another
 std::tuple<std::map<Ambulance, swap_patient_index>, operation_cost> SecondNeighbour(TabuList Tabu, std::vector<Ambulance*>& solution, int* aspiration_on) {
     std::map<Ambulance, swap_patient_index> neigh_swaped;
-    operation_cost first_neighbour_cost;
+    operation_cost second_neighbour_cost;
 
     //chose 2 random ambulances and change random patients
     srand(time(nullptr));
@@ -300,20 +302,23 @@ std::tuple<std::map<Ambulance, swap_patient_index>, operation_cost> SecondNeighb
             ambulance_idx2 = rand() % AMBULANCE_NUMBER;
         }
 
+        if(solution[ambulance_idx1]->getPatientCount() == 1 or solution[ambulance_idx1]->getPatientCount() == 1) continue;
+        
         number_of_patients_idx1 = solution[ambulance_idx1]->getPatientCount();  //liczba pacjentów dla wybranych losowo karetek
-        number_of_patients_idx2 = solution[ambulance_idx2]->getPatientCount();
 
         patient_idx1 = rand() % number_of_patients_idx1;  //wybór losowych pacjentów dla wybranych losowo karetek
-        patient_idx2 = rand() % number_of_patients_idx2;
 
-        std::pair<Ambulance, swap_patient_index> pair1(*solution[ambulance_idx1], patient_idx1);
-        std::pair<Ambulance, swap_patient_index> pair2(*solution[ambulance_idx2], patient_idx2);
+        std::pair<Ambulance, swap_patient_index> pair1(*solution[ambulance_idx1], -1);
+        std::pair<Ambulance, swap_patient_index> pair2(*solution[ambulance_idx2], 0);
 
         if(!Tabu.check_if_in_tabu(pair1, pair2)) {
-            swapPatients(*solution[ambulance_idx1], *solution[ambulance_idx2], patient_idx1, patient_idx2);
-            first_neighbour_cost = ObjectiveFunction(solution);
-            neigh_swaped.insert(std::make_pair(*solution[ambulance_idx1],patient_idx1));
-            neigh_swaped.insert(std::make_pair(*solution[ambulance_idx2],patient_idx2));
+            Patient* deleted_patient;
+            deleted_patient = solution[ambulance_idx1]->delete_patient(patient_idx1);
+            solution[ambulance_idx2]->add_patient(deleted_patient);
+
+            second_neighbour_cost = ObjectiveFunction(solution);
+            neigh_swaped.insert(std::make_pair(*solution[ambulance_idx1],-1));
+            neigh_swaped.insert(std::make_pair(*solution[ambulance_idx2],0));
             break;
         } else if (-1) {
             // TODO: uzupelnic aspiration criteria
@@ -321,7 +326,7 @@ std::tuple<std::map<Ambulance, swap_patient_index>, operation_cost> SecondNeighb
         }
     }
 
-    return std::make_tuple(neigh_swaped, first_neighbour_cost);
+    return std::make_tuple(neigh_swaped, second_neighbour_cost);
 }
 
 
@@ -341,6 +346,7 @@ NeighbourSelectResult NeighbourSelect(TabuList Tabu, std::array<std::vector<Ambu
         chosen_neighbour = temporary_neighbour;
         index = 1;
     }
+
 
     return {std::get<0>(chosen_neighbour), std::get<1>(chosen_neighbour), index};
 }
@@ -435,7 +441,7 @@ std::vector<Ambulance*> TabuSearch() {
 
 
         //7. aktualizuj liste tabu
-        tabu_l.update_tabu(best_temporary_solution.swap_patient_index);
+        tabu_l.update_tabu(best_temporary_solution.swap_patient);
 
         // 7. zapisz dane na potrzeby GUI
         GUI::single_results[GUI::iterations_number-1] = (int)iteration_best_result;

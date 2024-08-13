@@ -39,13 +39,16 @@ public:
     //dodaje pacjenta do karetki
     void add_patient(Patient* patient);
 
+    Patient* delete_patient(int que_index);
+
     ambulance_id getID() const {return id; };
+
     std::vector<Patient*> get_order(){return order_;};
 
     //zwraca ilosc pacjentów
     int getPatientCount(){return patient_count;};
 
-    patient_id getPatientID(int patient_index) const {return order_[patient_index]->getPatientId();}
+    patient_id getPatientID(int patient_index) const;
 
     void newOrder(std::vector<Patient*> ord){order_ = std::move(ord);}
 

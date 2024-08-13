@@ -22,7 +22,7 @@ struct Point {
 };
 
 struct NeighbourSelectResult {
-    std::map<Ambulance, swap_patient_index> swap_patient_index;
+    std::map<Ambulance, swap_patient_index> swap_patient;
     operation_cost cost;
     best_result_solution solution_index;
 };
