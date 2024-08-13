@@ -6,13 +6,14 @@
 
 #define MAX_PATIENTS_NUMBER 20
 
+typedef int ambulance_id;
 
 class Ambulance{
 public:
     //unikalne id identyfikujace karetke
     static int amb_id;
 
-    Ambulance(Hospital *actual_hospital): id(amb_id), actual_hospital_(actual_hospital){
+    explicit Ambulance(Hospital *actual_hospital): id(amb_id), actual_hospital_(actual_hospital), patient_count(0){
         for (int i = 0; i < MAX_PATIENTS_NUMBER; i++){
             order_.push_back(nullptr);
         }
@@ -35,21 +36,25 @@ public:
         return id > other.id;
     }
 
-    //dodaje pacjenta do karetki
     void add_patient(Patient* patient);
 
-    std::vector<Patient*> get_order(){return order_;};
+    [[nodiscard]] Patient* deletePatient(int que_index);
 
-    //zwraca ilosc pacjentów
-    int getPatientCount(){return patient_count;};
+    [[nodiscard]] ambulance_id getID() const {return id; };
+
+    std::vector<Patient*> getOrder(){return order_;};
+
+    [[nodiscard]] int getPatientCount() const {return patient_count;};
+
+    [[nodiscard]] patient_id getPatientID(int patient_index) const;
 
     void newOrder(std::vector<Patient*> ord){order_ = std::move(ord);}
 
-    int getAmbulanceLocationX(){return actual_hospital_ -> getHospitalLocationX();}
+    [[nodiscard]] int getAmbulanceLocationX() const {return actual_hospital_ -> getHospitalLocationX();}
 
-    int getAmbulanceLocationY(){return actual_hospital_ -> getHospitalLocationY();}
+    [[nodiscard]] int getAmbulanceLocationY() const {return actual_hospital_ -> getHospitalLocationY();}
 
-    Hospital* getActualHospital(){return actual_hospital_;}
+    [[nodiscard]] Hospital* getActualHospital() const {return actual_hospital_;}
 
     void changeHospital(Hospital* new_hospital) {
         actual_hospital_ = new_hospital;
@@ -58,10 +63,9 @@ public:
 
 private:
     int id;
-    int patient_count = 0; //Patients in a row
-    std::vector<Patient*> order_;
     Hospital* actual_hospital_;
-
+    int patient_count; //Patients in a que
+    std::vector<Patient*> order_;
 
 };
 

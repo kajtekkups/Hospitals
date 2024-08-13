@@ -1,5 +1,6 @@
 #include "GUI.hpp"
 #include <cfloat>
+#include <iostream>
 
 namespace GUI {
 
@@ -35,11 +36,10 @@ namespace GUI {
             max_iteration = configuration_data["max_iteration"];
             aspiration_criterion = configuration_data["aspiration_criterion"];
             tabu_list_length = configuration_data["tabu_list_length"];
-            nlohmann::json neighborhood_table = configuration_data["neighborhood_selection_method"];
-            neighborhood_selection_method.push_back(neighborhood_table[0]);
-            neighborhood_selection_method.push_back(neighborhood_table[1]);
-            neighborhood_selection_method.push_back(neighborhood_table[2]);
-            neighborhood_selection_method.push_back(neighborhood_table[3]);
+            const std::vector<int> neighborhood_table = configuration_data["neighborhood_selection_method"].get<std::vector<int>>();
+            for(int i = 0; i <  static_cast<int>(neighborhood_selection_method.size()); i++) {
+                neighborhood_selection_method[i] = neighborhood_table[i];
+            }
         }
         catch (const std::exception& e) {
             std::cout << "incorrect input data" << std::endl;
@@ -56,10 +56,10 @@ namespace GUI {
         nlohmann::json data_to_save;
 
         //save data to JSON object
-        data_to_save["liczba_iteracji"] = iterations_number;
-        data_to_save["liczba_uzyc_kryt_aspiracji"] = aspiration_criterion_use_number;
+        data_to_save["iterations_number"] = iterations_number;
+        data_to_save["aspiration_criterion_use_number"] = aspiration_criterion_use_number;
         data_to_save["execution_time"] = execution_time;
-        data_to_save["iteracja_najlepszy_wynik"] =  best_result_iteration;
+        data_to_save["best_result_iteration"] =  best_result_iteration;
         data_to_save["best_result"] =  static_cast<int>(best_result);
         data_to_save["single_results"] = single_results;
 

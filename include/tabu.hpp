@@ -1,61 +1,86 @@
 #ifndef HOSPITALS_TABU_HPP
 #define HOSPITALS_TABU_HPP
 
-#include "GUI.hpp"
-#include "hospital.hpp"
+
 #include "Ambulance.hpp"
 #include "Patient.hpp"
+#include "GUI.hpp"
 #include <map>
-#include <utility>
 #include <vector>
-#include <cfloat>
 
-#define CITY_LENGTH 25
-#define CITY_HEIGTH 50
-#define AMBULANCE_NUMBER 8  //how many ambulances are in town
+#define NOT_IN_TABU 0
+#define IN_TABU 1
 
-struct Point {
-    int x, y, distance;
+#define FIRST_NEIGH 0
+#define SECOND_NEIGH 1
+#define THIRD_NEIGH 2
+#define FOURTH_NEIGH 3
+
+#define NUMBER_OF_NEIGHBOURS 4
+
+
+typedef int swap_patient_index;  //identifies patient of particular ambulance, that is going to be swapt
+typedef int operation_cost;
+typedef int best_result_solution;
+
+
+struct NeighbourSelectResult {
+    std::map<Ambulance, swap_patient_index> swap_patient;
+    operation_cost cost;
+    best_result_solution solution_index;
 };
 
-//wektor, ktory ma swoja dlugosc, po przekroczeniu dlugosci zaczyna nadpisywac
-//elementy zaczynajac od poczatku, wektor ma dlugosc dwa razy wieksza niz podana
-//w tabu, przy jednej iteracji dodaje dwie pary do listy:
-// {karetka1, index1_przeniesionego_pacjenta}, {karetka2, index2_przeniesionego_pacjenta}
 
 class TabuList{
 public:
-    TabuList(int size): size_(size * 2){}
+    explicit TabuList(const int size): tabu_list_size_(size * 2), tabu_l(size*2){
+        // for (int i = 0; i < (size*2); i++) {
+        //     Ambulance amb(-1);
+        //     tabu_l.emplace_back(amb, -1, -1);
+        // }
+    }
 
 //dodaje dwie pary do listy tabu, jesli jest zapelniona dodaje od poczatku
-    void update_tabu(std::map<Ambulance, int> const &pair1, std::map<Ambulance, int> const &pair2);
+    void updateTabu(const std::map<Ambulance, swap_patient_index> &pairs);
 
-    int check_if_in_tabu(std::map<Ambulance, int> const &pair1, std::map<Ambulance, int> const &pair2);
+    [[nodiscard]] int checkIfInTabu(std::pair<Ambulance, swap_patient_index> const &pair1, std::pair<Ambulance, swap_patient_index> const &pair2) const;
 
 private:
-    int size_;
-    std::vector<std::map<Ambulance, int>> tabu_l;
+    int tabu_list_size_;
+    std::vector<std::tuple<ambulance_id, patient_id, swap_patient_index>> tabu_l;
     int save_index = 0;
 };
 
-void copy_ambulance_vector(std::vector<Ambulance*> orginal, std::vector<Ambulance*>& copy);
 
-std::vector<Ambulance*> TabuSearch();
+class TabuSearch {
+public:
+    TabuSearch(): Tabu(GUI::tabu_list_length){}
 
-void test_zmiennych_z_gui();
+    static void swapPatients(Ambulance &amb1, Ambulance &amb2, int patient1_idx, int patient2_idx);
+
+    static operation_cost ObjectiveFunction(std::vector<Ambulance*> const &solution);
+
+    std::tuple<std::map<Ambulance, swap_patient_index>, operation_cost> FirstNeighbour(std::vector<Ambulance*>& solution, int* aspiration_on);
+
+    std::tuple<std::map<Ambulance, swap_patient_index>, operation_cost> SecondNeighbour(std::vector<Ambulance*>& solution, int* aspiration_on);
+
+    NeighbourSelectResult NeighbourSelect(std::array<std::vector<Ambulance*>, NUMBER_OF_NEIGHBOURS>& solutions, int* aspiration_on);
+
+    static void createFirstSolution();
+
+    static void copyAmbulanceVector(const std::vector<Ambulance*>& orginal, std::vector<Ambulance*>& to_delete);
+
+    std::vector<Ambulance*> TabuSearchAlghoritm();
+
+private:
+    TabuList Tabu;
+};
 
 
-//lista wszsystkich szpitali, trzeba ja kiedys stworzyc
-extern std::vector<Hospital*> hospital_list;
 
-//lista wszystkich pacjentow
-extern std::vector<Patient*> patients_list;
 
-//lista wszystkich karetek
-extern std::vector<Ambulance*> ambulance_list;
 
-//Map of the city: higher the number is, overall time is slower, 0 means no passage
-extern std::vector<std::vector<int>> city;
+
 
 
 #endif //HOSPITALS_TABU_HPP
