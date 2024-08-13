@@ -2,15 +2,15 @@
 #include "GUI.hpp"
 #include <queue>
 #include <ctime>
-#include <cfloat>
+#include <limits>
 
 #define NOT_IN_TABU 0
 #define IN_TABU 1
 
-#define FIRST_NEIGH 1
-#define SECOND_NEIGH 2
-#define THIRD_NEIGH 3
-#define FOURTH_NEIGH 4
+#define FIRST_NEIGH 0
+#define SECOND_NEIGH 1
+#define THIRD_NEIGH 2
+#define FOURTH_NEIGH 3
 
 #define NUMBER_OF_NEIGHBOURS 4
 
@@ -303,7 +303,7 @@ std::tuple<std::map<Ambulance, swap_patient_index>, operation_cost> SecondNeighb
         }
 
         if(solution[ambulance_idx1]->getPatientCount() == 1 or solution[ambulance_idx1]->getPatientCount() == 1) continue;
-        
+
         number_of_patients_idx1 = solution[ambulance_idx1]->getPatientCount();  //liczba pacjentów dla wybranych losowo karetek
 
         patient_idx1 = rand() % number_of_patients_idx1;  //wybór losowych pacjentów dla wybranych losowo karetek
@@ -337,16 +337,36 @@ NeighbourSelectResult NeighbourSelect(TabuList Tabu, std::array<std::vector<Ambu
     best_result_solution index;
 
     //1. neighbour
-    chosen_neighbour = FirstNeighbour(Tabu, solutions[0], aspiration_on);
-    index = 0;
-
-    //2. neighbour
-    temporary_neighbour = SecondNeighbour(Tabu, solutions[1], aspiration_on);
-    if(std::get<1>(chosen_neighbour) > std::get<1>(temporary_neighbour)) {
-        chosen_neighbour = temporary_neighbour;
-        index = 1;
+    if(GUI::neighborhood_selection_method[FIRST_NEIGH]) {
+        chosen_neighbour = FirstNeighbour(Tabu, solutions[FIRST_NEIGH], aspiration_on);
+        index = FIRST_NEIGH;
     }
 
+    //2. neighbour
+    if(GUI::neighborhood_selection_method[SECOND_NEIGH]) {
+        temporary_neighbour = FirstNeighbour(Tabu, solutions[SECOND_NEIGH], aspiration_on);
+        if(std::get<1>(chosen_neighbour) > std::get<1>(temporary_neighbour)) {
+            chosen_neighbour = temporary_neighbour;
+            index = SECOND_NEIGH;
+        }
+    }
+
+    //3. Neighbour
+    if(GUI::neighborhood_selection_method[THIRD_NEIGH]) {
+        temporary_neighbour = SecondNeighbour(Tabu, solutions[THIRD_NEIGH], aspiration_on);
+        if(std::get<1>(chosen_neighbour) > std::get<1>(temporary_neighbour)) {
+            chosen_neighbour = temporary_neighbour;
+            index = THIRD_NEIGH;
+        }
+    }
+
+    if(GUI::neighborhood_selection_method[FOURTH_NEIGH]) {
+        temporary_neighbour = SecondNeighbour(Tabu, solutions[FOURTH_NEIGH], aspiration_on);
+        if(std::get<1>(chosen_neighbour) > std::get<1>(temporary_neighbour)) {
+            chosen_neighbour = temporary_neighbour;
+            index = FOURTH_NEIGH;
+        }
+    }
 
     return {std::get<0>(chosen_neighbour), std::get<1>(chosen_neighbour), index};
 }
@@ -410,7 +430,7 @@ std::vector<Ambulance*> TabuSearch() {
 
 
         // 3. oblicz wartosci funkcji celu
-        double cost_temp_solution[NUMBER_OF_NEIGHBOURS];
+        int cost_temp_solution[NUMBER_OF_NEIGHBOURS];
         for(int i = 0; i < NUMBER_OF_NEIGHBOURS; i++) {
             cost_temp_solution[i] = ObjectiveFunction(potential_solutions[i]);
         }
@@ -419,7 +439,7 @@ std::vector<Ambulance*> TabuSearch() {
         //    (moglo by to byc bardziej optymalne, ale jest to tymczasowe rozwiazanie oszczedzajace czas)
         for(int i = 0; i < NUMBER_OF_NEIGHBOURS; i++) {
             if(!GUI::neighborhood_selection_method[i]){
-                cost_temp_solution[i] = DBL_MAX;
+                cost_temp_solution[i] = std::numeric_limits<int>::max();
             }
         }
 
