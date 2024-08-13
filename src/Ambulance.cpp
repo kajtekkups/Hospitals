@@ -7,7 +7,7 @@ void Ambulance::add_patient(Patient* patient) {
     patient_count++;
 }
 
-Patient* Ambulance::delete_patient(int patient_que_index) {
+Patient* Ambulance::deletePatient(int patient_que_index) {
     Patient* return_patient = order_[patient_que_index];
 
     for (int i = patient_que_index; i < MAX_PATIENTS_NUMBER - 1; i++) {

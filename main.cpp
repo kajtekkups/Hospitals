@@ -1,4 +1,5 @@
 #include "GUI.hpp"
+#include "city.hpp"
 #include <iostream>
 #include <tabu.hpp>
 #include <chrono>
@@ -6,6 +7,7 @@
 //pamietac o zmianie AMBULANCE_NUMBER
 
 
+int AMBULANCE_NUMBER = 8;
 
 int main(){
     GUI::loadData();
@@ -14,7 +16,7 @@ int main(){
     auto start = std::chrono::high_resolution_clock::now();
 
 
-    std::vector<std::string> specializations= {
+    specializations_vector specializations= {
             "Ortopedia",
             "Okulistyka",
             "Neurologia",
@@ -103,12 +105,12 @@ int main(){
     patients_list.push_back(&pat_19);
     patients_list.push_back(&pat_20);
 
-
-    std::vector<Ambulance*> wynik = TabuSearch();
+    TabuSearch Tabu_object;
+    std::vector<Ambulance*> wynik = Tabu_object.TabuSearchAlghoritm();
 
     int index_ambulansu = 1;
     for(auto karetka: wynik){
-        for(auto pacjent: karetka->get_order()){
+        for(auto pacjent: karetka->getOrder()){
             if (pacjent == nullptr){
                 break;
             }

@@ -1,5 +1,6 @@
 #include "GUI.hpp"
 #include <cfloat>
+#include <iostream>
 
 namespace GUI {
 
@@ -35,8 +36,8 @@ namespace GUI {
             max_iteration = configuration_data["max_iteration"];
             aspiration_criterion = configuration_data["aspiration_criterion"];
             tabu_list_length = configuration_data["tabu_list_length"];
-            std::vector<int> neighborhood_table = configuration_data["neighborhood_selection_method"].get<std::vector<int>>();
-            for(int i = 0; i <  neighborhood_selection_method.size(); i++) {
+            const std::vector<int> neighborhood_table = configuration_data["neighborhood_selection_method"].get<std::vector<int>>();
+            for(int i = 0; i <  static_cast<int>(neighborhood_selection_method.size()); i++) {
                 neighborhood_selection_method[i] = neighborhood_table[i];
             }
         }
