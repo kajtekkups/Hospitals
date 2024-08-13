@@ -35,11 +35,10 @@ namespace GUI {
             max_iteration = configuration_data["max_iteration"];
             aspiration_criterion = configuration_data["aspiration_criterion"];
             tabu_list_length = configuration_data["tabu_list_length"];
-            nlohmann::json neighborhood_table = configuration_data["neighborhood_selection_method"];
-            neighborhood_selection_method.push_back(neighborhood_table[0]);
-            neighborhood_selection_method.push_back(neighborhood_table[1]);
-            neighborhood_selection_method.push_back(neighborhood_table[2]);
-            neighborhood_selection_method.push_back(neighborhood_table[3]);
+            std::vector<int> neighborhood_table = configuration_data["neighborhood_selection_method"].get<std::vector<int>>();
+            for(int i = 0; i <  neighborhood_selection_method.size(); i++) {
+                neighborhood_selection_method[i] = neighborhood_table[i];
+            }
         }
         catch (const std::exception& e) {
             std::cout << "incorrect input data" << std::endl;

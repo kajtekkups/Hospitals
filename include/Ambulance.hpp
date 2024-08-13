@@ -6,6 +6,7 @@
 
 #define MAX_PATIENTS_NUMBER 20
 
+typedef int ambulance_id;
 
 class Ambulance{
 public:
@@ -38,6 +39,7 @@ public:
     //dodaje pacjenta do karetki
     void add_patient(Patient* patient);
 
+    ambulance_id getID() const {return id; };
     std::vector<Patient*> get_order(){return order_;};
 
     //zwraca ilosc pacjentów
