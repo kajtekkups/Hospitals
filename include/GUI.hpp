@@ -1,7 +1,7 @@
 #ifndef HOSPITALS_WINDOW_HPP
 #define HOSPITALS_WINDOW_HPP
 
-#include "Patient.hpp"
+
 #include <fstream>
 #include <nlohmann/json.hpp>
 
@@ -11,9 +11,6 @@ namespace GUI {
     //data base paths
     const std::string data_file_path = "../GUI/dane.json";
     const std::string results_file_path = "../GUI/wyniki.json";
-    const std::string inital_setting_path = "../GUI/initial_setting.json";
-
-    extern specializations_vector specializations;
 
 
     //GUI input data
@@ -31,8 +28,6 @@ namespace GUI {
     extern double best_result;
 
     int loadData();
-
-    void loadHospitals();
 
     int saveData();
 } //GUI

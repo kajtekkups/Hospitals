@@ -2,6 +2,7 @@
 // ReSharper disable CppParameterMayBeConstPtrOrRef
 #include "tabu.hpp"
 #include "GUI.hpp"
+#include "Configuration_data.hpp"
 #include <ctime>
 #include <limits>
 #include "city.hpp"
@@ -88,11 +89,11 @@ std::tuple<std::map<Ambulance, swap_patient_index>, operation_cost> TabuSearch::
     srand(time(nullptr));
 
     while(true) {
-        const int ambulance_idx1 = rand() % AMBULANCE_NUMBER;   //chose random ambulance
-        int ambulance_idx2 = rand() % AMBULANCE_NUMBER;
+        const int ambulance_idx1 = rand() % Config_Data::ambulance_number;   //chose random ambulance
+        int ambulance_idx2 = rand() % Config_Data::ambulance_number;
 
         while (ambulance_idx2 == ambulance_idx1) {
-            ambulance_idx2 = rand() % AMBULANCE_NUMBER;
+            ambulance_idx2 = rand() % Config_Data::ambulance_number;
         }
 
         const int number_of_patients_idx1 = solution[ambulance_idx1]->getPatientCount();  //liczba pacjentów dla wybranych losowo karetek
@@ -129,11 +130,11 @@ std::tuple<std::map<Ambulance, swap_patient_index>, operation_cost> TabuSearch::
     srand(time(nullptr));
 
     while(true) {
-        const int ambulance_idx1 = rand() % AMBULANCE_NUMBER;   //chose random ambulance
-        int ambulance_idx2 = rand() % AMBULANCE_NUMBER;
+        const int ambulance_idx1 = rand() % Config_Data::ambulance_number;   //chose random ambulance
+        int ambulance_idx2 = rand() % Config_Data::ambulance_number;
 
         while (ambulance_idx2 == ambulance_idx1) {
-            ambulance_idx2 = rand() % AMBULANCE_NUMBER;
+            ambulance_idx2 = rand() % Config_Data::ambulance_number;
         }
 
         if(solution[ambulance_idx1]->getPatientCount() == 1 or solution[ambulance_idx1]->getPatientCount() == 1) continue;

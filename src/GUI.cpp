@@ -1,25 +1,9 @@
-#include "Hospital.hpp"
-#include "city.hpp"
+
 #include "GUI.hpp"
 #include <cfloat>
 #include <iostream>
 
 namespace GUI {
-
-    specializations_vector specializations= {
-        "Ortopedia",
-        "Okulistyka",
-        "Neurologia",
-        "Chirurgia",
-        "Kardiologia",
-        "Pediatria",
-        "Endokrynologia",
-        "Geriatria",
-        "Ginekologia",
-        "Urologia",
-        "Psychiatria",
-        "Oparzenia",
-        "Gastroenterologia"};
 
     //GUI input data
     int max_iteration;
@@ -66,32 +50,6 @@ namespace GUI {
         configuration_file.close();
 
         return 0;
-    }
-
-    void loadHospitals() {
-        //load JSON file
-        std::ifstream configuration_file(inital_setting_path);
-        if (!configuration_file.is_open()) {
-            std::cerr << "Could not open file " << data_file_path << std::endl;
-            return;
-        }
-
-        nlohmann::json configuration_data;
-        configuration_file >> configuration_data;
-
-        try {
-            for (auto& [hospital_name, value] : configuration_data.items()) {
-                Hospital* hosp = new Hospital(value["x"],  value["y"] , specializations, value["specialization_grade"].get<std::vector<int>>());
-                hospital_list.push_back(hosp);
-            }
-        }
-        catch (const std::exception& e) {
-            std::cout << "incorrect input data" << std::endl;
-        }
-
-        //close file
-        configuration_file.close();
-
     }
 
 
