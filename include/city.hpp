@@ -8,7 +8,6 @@
 
 #define CITY_LENGTH 25
 #define CITY_HEIGTH 50
-extern int AMBULANCE_NUMBER;  //how many ambulances are in town
 
 
 struct Point {

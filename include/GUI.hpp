@@ -1,6 +1,7 @@
 #ifndef HOSPITALS_WINDOW_HPP
 #define HOSPITALS_WINDOW_HPP
 
+
 #include <fstream>
 #include <nlohmann/json.hpp>
 
@@ -10,8 +11,8 @@ namespace GUI {
     //data base paths
     const std::string data_file_path = "../GUI/dane.json";
     const std::string results_file_path = "../GUI/wyniki.json";
-    const std::string inital_setting_path = "../GUI/initial_setting.json";
-    
+
+
     //GUI input data
     extern int max_iteration;
     extern int aspiration_criterion;
