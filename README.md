@@ -1,3 +1,3 @@
 # Hospitals
 
-Software tool for mananing city ambulance infrostructure, based on TABU search alghoritm.
+Software tool for manageing city ambulance infrostructure, based on TABU search alghoritm.
