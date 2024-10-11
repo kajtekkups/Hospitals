@@ -47,7 +47,7 @@ void loadConfigData() {
             patients_list.push_back(pat);
         }
 
-        const std::vector<int> ambulance_location = configuration_data["Ambulance"]["location"].get<std::vector<int>>();
+        const std::vector<int> ambulance_location = configuration_data["Ambulance"]["location_as_hospital"].get<std::vector<int>>();
         ambulance_number = static_cast<int>(ambulance_location.size());
         for(int i=0; i < (ambulance_number); i++) {
             Ambulance *new_ambulance = new Ambulance(hospital_list[ambulance_location[i]]);

@@ -26,6 +26,7 @@ class GUI(tk.Tk):
 
         self.sciezka_do_exe = r'../cmake-build-debug/Hospitals'
         self.sciezka_do_wynikow = r'wyniki.json'
+        self.initial_settings_file = r'./initial_setting.json'
 
         self.wartosci_funkcji =[]
         self.liczba_iteracji = None
@@ -39,6 +40,10 @@ class GUI(tk.Tk):
         self.przycisk_sasiedztwo3 = None
         self.przycisk_sasiedztwo4 = None
 
+        self.tree_hospital = None
+        self.tree_parient = None
+        self.tree_ambulance = None
+
         #frontend
         super().__init__()
         self.title("Algorytm TS") # Ustawienie tytułu okna
@@ -48,7 +53,8 @@ class GUI(tk.Tk):
         self.notebook = ttk.Notebook(self, padding=10)
         self.utworz_zakladke_zapisu_danych()
         self.zakladka_dla_wykresu()
-        self.utworz_zakladke_wyniku()
+        self.create_results_objects()
+        self.input_data_tab()
 
         # Wyświetl zakładki w pełnej szerokości i wysokości okna
         self.notebook.grid(row=0, column=0, sticky="nsew")
@@ -60,13 +66,96 @@ class GUI(tk.Tk):
     def utworz_zakladke_zapisu_danych(self):
         self.karta1 = tk.Frame(self.notebook)
         self.dodaj_pola_karty1()
-        self.notebook.add(self.karta1, text="Dane do algorytmu")
-
+        self.notebook.add(self.karta1, text="Algorithm input data")
 
     def zakladka_dla_wykresu(self):
         self.karta2 = tk.Frame(self.notebook)
-        self.notebook.add(self.karta2, text="Wykres")
+        self.notebook.add(self.karta2, text="Chart")
 
+    def input_data_tab(self):
+        self.karta3 = tk.Frame(self.notebook)
+        self.notebook.add(self.karta3, text="Input data")
+        self.create_hospital_table()
+        self.create_patient_table()
+        self.create_ambulance_table()
+
+
+    def create_hospital_table(self):
+        self.tree_hospital = ttk.Treeview(self.karta3, columns=("Name", "Position_X", "Position_Y", "Specialization_grade"), show="headings")
+        self.tree_hospital.heading("Name", text="Hospital name")
+        self.tree_hospital.heading("Position_X", text="Position X")
+        self.tree_hospital.heading("Position_Y", text="Position Y")
+        self.tree_hospital.heading("Specialization_grade", text="Specialization grade")
+
+        # set colum width
+        self.tree_hospital.column("Name", width=100)
+        self.tree_hospital.column("Position_X", width=10)
+        self.tree_hospital.column("Position_Y", width=10)
+        self.tree_hospital.column("Specialization_grade", width=200)
+        self.tree_hospital.pack(fill=tk.BOTH)
+
+        # Wczytywanie danych z pliku JSON
+        with (open(self.initial_settings_file, 'r') as file):
+            data = json.load(file)
+            for hospital in data['Hospitals']:
+                position_x = data['Hospitals'][hospital]['x']
+                position_y = data['Hospitals'][hospital]['y']
+                specialization = data['Hospitals'][hospital]['specialization_grade']
+                self.tree_hospital.insert("", "end", values=(hospital, position_x, position_y, specialization))
+
+    def create_patient_table(self):
+        self.tree_parient = ttk.Treeview(self.karta3, columns=("Name", "Position_X", "Position_Y", "time", "priority", "Specialization_grade"),
+                                 show="headings")
+
+        self.tree_parient.heading("Name", text="Patient name")
+        self.tree_parient.heading("Position_X", text="Position X")
+        self.tree_parient.heading("Position_Y", text="Position Y")
+        self.tree_parient.heading("time", text="Time")
+        self.tree_parient.heading("priority", text="priority")
+        self.tree_parient.heading("Specialization_grade", text="Specialization grade")
+
+        # set colum width
+        self.tree_parient.column("Name", width=100)
+        self.tree_parient.column("Position_X", width=10)
+        self.tree_parient.column("Position_Y", width=10)
+        self.tree_parient.column("time", width=10)
+        self.tree_parient.column("priority", width=10)
+        self.tree_parient.column("Specialization_grade", width=200)
+        self.tree_parient.pack(fill=tk.BOTH)
+
+        # Wczytywanie danych z pliku JSON
+        with (open(self.initial_settings_file, 'r') as file):
+            data = json.load(file)
+            for patient in data['Patients']:
+                position_x = data['Patients'][patient]['x']
+                position_y = data['Patients'][patient]['y']
+                time = data['Patients'][patient]['time']
+                priority = data['Patients'][patient]['priority']
+                specialization = data['Patients'][patient]['specialization_grade']
+                self.tree_parient.insert("", "end", values=(patient, position_x, position_y, time, priority, specialization))
+
+
+    def create_ambulance_table(self):
+        self.tree_ambulance = ttk.Treeview(self.karta3, columns=("Name", "Hospital"),
+                                 show="headings")
+
+        self.tree_ambulance.heading("Name", text="Patient name")
+        self.tree_ambulance.heading("Hospital", text="Hospital")
+
+        # set colum width
+        self.tree_ambulance.column("Name", width=100)
+        self.tree_ambulance.column("Hospital", width=100)
+        self.tree_ambulance.pack(fill=tk.BOTH)
+
+        # Wczytywanie danych z pliku JSON
+        with (open(self.initial_settings_file, 'r') as file):
+            data = json.load(file)
+            for ambulance_hospital in data['Ambulance']['location_as_hospital']:
+                ambulance_number = 1
+                name_ambulace = "Ambulans" + str(ambulance_number)
+                hospital = "Hospital_" + str(ambulance_hospital)
+                self.tree_ambulance.insert("", "end", values=(name_ambulace, hospital))
+                ambulance_number = ambulance_number + 1
 
     def dodaj_pola_karty1(self):
         # max_liczba_iteracji
@@ -164,7 +253,7 @@ class GUI(tk.Tk):
             json.dump(self.data_to_save, file)
 
 
-    def utworz_zakladke_wyniku(self):
+    def create_results_objects(self):
         # Dodaj pole z iloscia iteracji
         self.ramka = tk.Frame(self.karta1, bd=1, relief=tk.GROOVE)
         self.ramka.grid(row=0, column=151, padx=10, pady=10)
