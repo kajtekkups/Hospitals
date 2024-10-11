@@ -25,3 +25,8 @@ After running Algorithm, you can also view the results there
 ![Screenshot from 2024-10-11 20-35-59](https://github.com/user-attachments/assets/250d523c-53e7-4217-a3c5-57ef65372f9f)
 
 ## Results
+Results can be viewed in "Ambulance input data" tab and "Ambulance allocation" tab (as a list of patients for each ambulance)
+![Screenshot from 2024-10-11 20-38-53](https://github.com/user-attachments/assets/be90225d-8372-4032-99b8-a6e5f3439721)
+
+You can also view the chart of reasult in each iteration
+![Screenshot from 2024-10-11 20-36-11](https://github.com/user-attachments/assets/35ebbfb3-e2e3-42e0-85d9-230e55b093b2)
