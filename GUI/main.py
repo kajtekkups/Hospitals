@@ -40,6 +40,8 @@ class GUI(tk.Tk):
         self.przycisk_sasiedztwo3 = None
         self.przycisk_sasiedztwo4 = None
 
+        self.algorithm_output = None
+
         self.tree_hospital = None
         self.tree_parient = None
         self.tree_ambulance = None
@@ -55,6 +57,7 @@ class GUI(tk.Tk):
         self.zakladka_dla_wykresu()
         self.create_results_objects()
         self.input_data_tab()
+        self.ambulance_allocation_tab()
 
         # Wyświetl zakładki w pełnej szerokości i wysokości okna
         self.notebook.grid(row=0, column=0, sticky="nsew")
@@ -79,6 +82,9 @@ class GUI(tk.Tk):
         self.create_patient_table()
         self.create_ambulance_table()
 
+    def ambulance_allocation_tab(self):
+        self.karta4 = tk.Frame(self.notebook)
+        self.notebook.add(self.karta4, text="Ambulance allocation")
 
     def create_hospital_table(self):
         self.tree_hospital = ttk.Treeview(self.karta3, columns=("Name", "Position_X", "Position_Y", "Specialization_grade"), show="headings")
@@ -322,12 +328,22 @@ class GUI(tk.Tk):
         #TODO:tylko zeby zaprezentowac dzialanie
         proces = subprocess.Popen(self.sciezka_do_exe, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
         # Pobierz wyjście i błędy
-        wyjscie, bledy = proces.communicate()
+        self.algorithm_output, bledy = proces.communicate()
         # Wyświetl wyniki
         print("Wyjście:\n")
-        print(wyjscie)
+        print(self.algorithm_output)
         print("\nBłędy:")
         print(bledy)
+
+    def process_algorithm_output(self):
+        self.algorithm_output = self.algorithm_output.replace(" ", "")
+        self.algorithm_output = self.algorithm_output.replace("Ambulans", "")
+        self.algorithm_output = self.algorithm_output.replace("Pacjent", "")
+        lines = self.algorithm_output.split("\n")
+
+        for element in lines:
+            lines
+        print(lines)
 
 
     def wczytaj_wyniki(self):
@@ -378,6 +394,7 @@ class GUI(tk.Tk):
         self.etykieta_najlepszy_wynik_iteracja.set(self.iteracja_najlepszy_wynik)
         self.etykieta_najlepszy_wynik.set(self.najlepszy_wynik)
         self.rysuj_wykres()
+        self.process_algorithm_output()
         print(self.wartosci_funkcji[1])
 
 
