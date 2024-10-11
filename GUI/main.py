@@ -41,10 +41,12 @@ class GUI(tk.Tk):
         self.przycisk_sasiedztwo4 = None
 
         self.algorithm_output = None
+        self.ambulance_list = []
 
         self.tree_hospital = None
         self.tree_parient = None
         self.tree_ambulance = None
+        self.tree_ambulance_allocation = None
 
         #frontend
         super().__init__()
@@ -156,9 +158,11 @@ class GUI(tk.Tk):
         # Wczytywanie danych z pliku JSON
         with (open(self.initial_settings_file, 'r') as file):
             data = json.load(file)
+            ambulance_number = 1
             for ambulance_hospital in data['Ambulance']['location_as_hospital']:
-                ambulance_number = 1
-                name_ambulace = "Ambulans" + str(ambulance_number)
+                self.ambulance_list = self.ambulance_list + [ambulance_number]
+
+                name_ambulace = "Ambulans_" + str(ambulance_number)
                 hospital = "Hospital_" + str(ambulance_hospital)
                 self.tree_ambulance.insert("", "end", values=(name_ambulace, hospital))
                 ambulance_number = ambulance_number + 1
@@ -341,9 +345,32 @@ class GUI(tk.Tk):
         self.algorithm_output = self.algorithm_output.replace("Pacjent", "")
         lines = self.algorithm_output.split("\n")
 
+        ambulance_allocation = {}
+        for ambulance in self.ambulance_list:
+            ambulance_allocation[str(ambulance)] = []
+
         for element in lines:
-            lines
-        print(lines)
+            if ':' in element:
+                ambulans_number, patient_number = element.split(":")
+                patient_number = int(patient_number) + 1
+                ambulance_allocation[str(ambulans_number)].append(patient_number)
+
+
+        #update GUI
+        self.tree_ambulance_allocation = ttk.Treeview(self.karta4, columns=("Ambulance", "patients_list"),
+                                 show="headings")
+
+        self.tree_ambulance_allocation.heading("Ambulance", text="Ambulance")
+        self.tree_ambulance_allocation.heading("patients_list", text="Patients number")
+
+        # set colum width
+        self.tree_ambulance_allocation.column("Ambulance", width=100)
+        self.tree_ambulance_allocation.column("patients_list", width=100)
+        self.tree_ambulance_allocation.pack(fill=tk.BOTH)
+
+        # Wczytywanie danych z pliku JSON
+        for ambulace_number, patient_number in ambulance_allocation.items():
+            self.tree_ambulance_allocation.insert("", "end", values=(ambulace_number, patient_number))
 
 
     def wczytaj_wyniki(self):
