@@ -40,9 +40,13 @@ class GUI(tk.Tk):
         self.przycisk_sasiedztwo3 = None
         self.przycisk_sasiedztwo4 = None
 
+        self.algorithm_output = None
+        self.ambulance_list = []
+
         self.tree_hospital = None
         self.tree_parient = None
         self.tree_ambulance = None
+        self.tree_ambulance_allocation = None
 
         #frontend
         super().__init__()
@@ -55,6 +59,7 @@ class GUI(tk.Tk):
         self.zakladka_dla_wykresu()
         self.create_results_objects()
         self.input_data_tab()
+        self.ambulance_allocation_tab()
 
         # Wyświetl zakładki w pełnej szerokości i wysokości okna
         self.notebook.grid(row=0, column=0, sticky="nsew")
@@ -79,6 +84,9 @@ class GUI(tk.Tk):
         self.create_patient_table()
         self.create_ambulance_table()
 
+    def ambulance_allocation_tab(self):
+        self.karta4 = tk.Frame(self.notebook)
+        self.notebook.add(self.karta4, text="Ambulance allocation")
 
     def create_hospital_table(self):
         self.tree_hospital = ttk.Treeview(self.karta3, columns=("Name", "Position_X", "Position_Y", "Specialization_grade"), show="headings")
@@ -150,9 +158,11 @@ class GUI(tk.Tk):
         # Wczytywanie danych z pliku JSON
         with (open(self.initial_settings_file, 'r') as file):
             data = json.load(file)
+            ambulance_number = 1
             for ambulance_hospital in data['Ambulance']['location_as_hospital']:
-                ambulance_number = 1
-                name_ambulace = "Ambulans" + str(ambulance_number)
+                self.ambulance_list = self.ambulance_list + [ambulance_number]
+
+                name_ambulace = "Ambulans_" + str(ambulance_number)
                 hospital = "Hospital_" + str(ambulance_hospital)
                 self.tree_ambulance.insert("", "end", values=(name_ambulace, hospital))
                 ambulance_number = ambulance_number + 1
@@ -322,12 +332,45 @@ class GUI(tk.Tk):
         #TODO:tylko zeby zaprezentowac dzialanie
         proces = subprocess.Popen(self.sciezka_do_exe, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
         # Pobierz wyjście i błędy
-        wyjscie, bledy = proces.communicate()
+        self.algorithm_output, bledy = proces.communicate()
         # Wyświetl wyniki
         print("Wyjście:\n")
-        print(wyjscie)
+        print(self.algorithm_output)
         print("\nBłędy:")
         print(bledy)
+
+    def process_algorithm_output(self):
+        self.algorithm_output = self.algorithm_output.replace(" ", "")
+        self.algorithm_output = self.algorithm_output.replace("Ambulans", "")
+        self.algorithm_output = self.algorithm_output.replace("Pacjent", "")
+        lines = self.algorithm_output.split("\n")
+
+        ambulance_allocation = {}
+        for ambulance in self.ambulance_list:
+            ambulance_allocation[str(ambulance)] = []
+
+        for element in lines:
+            if ':' in element:
+                ambulans_number, patient_number = element.split(":")
+                patient_number = int(patient_number) + 1
+                ambulance_allocation[str(ambulans_number)].append(patient_number)
+
+
+        #update GUI
+        self.tree_ambulance_allocation = ttk.Treeview(self.karta4, columns=("Ambulance", "patients_list"),
+                                 show="headings")
+
+        self.tree_ambulance_allocation.heading("Ambulance", text="Ambulance")
+        self.tree_ambulance_allocation.heading("patients_list", text="Patients number")
+
+        # set colum width
+        self.tree_ambulance_allocation.column("Ambulance", width=100)
+        self.tree_ambulance_allocation.column("patients_list", width=100)
+        self.tree_ambulance_allocation.pack(fill=tk.BOTH)
+
+        # Wczytywanie danych z pliku JSON
+        for ambulace_number, patient_number in ambulance_allocation.items():
+            self.tree_ambulance_allocation.insert("", "end", values=(ambulace_number, patient_number))
 
 
     def wczytaj_wyniki(self):
@@ -378,6 +421,7 @@ class GUI(tk.Tk):
         self.etykieta_najlepszy_wynik_iteracja.set(self.iteracja_najlepszy_wynik)
         self.etykieta_najlepszy_wynik.set(self.najlepszy_wynik)
         self.rysuj_wykres()
+        self.process_algorithm_output()
         print(self.wartosci_funkcji[1])
 
 
