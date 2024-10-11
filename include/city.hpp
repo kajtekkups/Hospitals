@@ -1,7 +1,7 @@
 #ifndef CITY_HPP
 #define CITY_HPP
 
-#include "hospital.hpp"
+#include "Hospital.hpp"
 #include "Ambulance.hpp"
 #include "Patient.hpp"
 #include <queue>

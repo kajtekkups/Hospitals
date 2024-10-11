@@ -24,7 +24,7 @@ class GUI(tk.Tk):
                            "single_results": None,
                            "best_result": None}
 
-        self.sciezka_do_exe = r'../cmake-build-debug/Hospitals.exe'
+        self.sciezka_do_exe = r'../cmake-build-debug/Hospitals'
         self.sciezka_do_wynikow = r'wyniki.json'
 
         self.wartosci_funkcji =[]

@@ -52,38 +52,41 @@ std::vector<Patient*> patients_list;
 std::vector<Ambulance*> ambulance_list;
 
 
-//check if coordinations are correct
-bool isValid(int x, int y, std::vector<std::vector<int>>& grid, std::vector<std::vector<bool>>& visited) {
+//check if coordinations are correct, point is on a road, point hasn't been visited
+bool isPointValid(int x, int y, std::vector<std::vector<int>>& grid, std::vector<std::vector<bool>>& visited) {
         return (x >= 0 && x < CITY_LENGTH && y >= 0 && y < CITY_HEIGTH && grid[x][y] && !visited[x][y]);
 }
 
 
 //Alghoritm for finding shortest path from poin A to point B
+//NOTE: BFS is not most optimal algorithm for this purpose, it finds shortest path,
+//      but not most time-optimal one.
+//      A-star would probably be the best choice, but it is not that important in this project.
 int BFS(std::vector<std::vector<int>>& grid, const Point& start, const Point& end) {
-        std::vector<std::vector<bool>> visited(CITY_LENGTH, std::vector<bool>(CITY_HEIGTH, false));
-        std::queue<Point> q;
+        std::vector<std::vector<bool>> visited_points(CITY_LENGTH, std::vector<bool>(CITY_HEIGTH, false));
+        std::queue<Point> BFS_queue;
 
         int dx[] = {0, 0, 1, -1};
         int dy[] = {1, -1, 0, 0};
 
-        q.push(start);
-        visited[start.x][start.y] = true;
+        BFS_queue.push(start);
+        visited_points[start.x][start.y] = true;
 
-        while (!q.empty()) {
-                Point current = q.front();
-                q.pop();
+        while (!BFS_queue.empty()) {
+                Point current = BFS_queue.front();
+                BFS_queue.pop();
 
                 if (current.x == end.x && current.y == end.y) {
-                        return current.distance; // Zwraca ilość kroków do celu
+                        return current.distance;
                 }
 
                 for (int i = 0; i < 4; ++i) {
                         int newX = current.x + dx[i];
                         int newY = current.y + dy[i];
 
-                        if (isValid(newX, newY, grid, visited)) {
-                                visited[newX][newY] = true;
-                                q.push({newX, newY, current.distance + grid[newX][newY]});
+                        if (isPointValid(newX, newY, grid, visited_points)) {
+                                visited_points[newX][newY] = true;
+                                BFS_queue.push({newX, newY, current.distance + grid[newX][newY]});
                         }
                 }
         }
