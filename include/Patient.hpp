@@ -12,14 +12,14 @@ class Patient{
 public:
     patient_id static pat_id;
 
-    Patient(const int x, const int y, const int time, const int priority, std::vector<std::string> specialization, std::vector<int> value) :id_(pat_id), x_(x), y_(y), time_(time), priority_(priority){
+    Patient(const int x, const int y, const int time, const float priority, std::vector<std::string> specialization, std::vector<int> value) :id_(pat_id), x_(x), y_(y), time_(time), priority_(priority){
         for (int i = 0; i < static_cast<int>(specialization.size()); i++){
             patient_injuries_.insert(std::make_pair(specialization[i], value[i]));
         }
         pat_id++;
     }
 
-    [[nodiscard]] int getPriority() const {return priority_;}
+    [[nodiscard]] float getPriority() const {return priority_;}
 
     [[nodiscard]] int getTime() const {return time_;}
 
@@ -36,7 +36,7 @@ private:
     int x_;
     int y_;
     int time_;
-    int priority_;
+    float priority_;
     std::map<std::string, int> patient_injuries_;
 };
 

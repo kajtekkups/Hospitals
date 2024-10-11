@@ -51,10 +51,12 @@ void TabuSearch::swapPatients(Ambulance &amb1, Ambulance &amb2, const int patien
 
 operation_cost TabuSearch::ObjectiveFunction(std::vector<Ambulance*> const &solution){
     int final_cost = 0;
+    int overall_cost = 0;
 
     for (const auto ambulance : solution){
         Point ambulance_location = {ambulance->getAmbulanceLocationX(), ambulance->getAmbulanceLocationY(), 0};
-
+        int temporary_cost = 0;
+        int patient_order = 1;
         for (const auto patient : ambulance->getOrder()){
             if (patient == nullptr){
                 break;
@@ -70,13 +72,22 @@ operation_cost TabuSearch::ObjectiveFunction(std::vector<Ambulance*> const &solu
             const int amb_to_pat_time = BFS(city, ambulance_location, patient_location);
             const int pat_to_hosp_time = BFS(city, patient_location, hospital_location);
 
-            const int patient_priority = patient->getPriority();
-            final_cost = final_cost + patient_priority * (patient_time + amb_to_pat_time) + pat_to_hosp_time;
+            const float patient_priority = patient->getPriority();
+
+            //patient priority is a number from 0.4 to 1, where 0.4 is low priority,
+            //if patient priority is high, and they are far in ambulance line,
+            //overal cost is greater
+            temporary_cost = temporary_cost + static_cast<int>((patient_priority * static_cast<float>(patient_order)) * static_cast<float>(patient_time + amb_to_pat_time + pat_to_hosp_time));
 
             ambulance_location = hospital_location;
+            patient_order++;
+        }
+        overall_cost += temporary_cost;
+        if(temporary_cost > final_cost) {
+            final_cost = temporary_cost;
         }
     }
-    return final_cost;
+    return overall_cost;
 }
 
 //chose 2 random ambulances and change random patients
@@ -247,7 +258,7 @@ std::vector<Ambulance*> TabuSearch::TabuSearchAlghoritm() {
         int aspiration_on[NUMBER_OF_NEIGHBOURS] = {0};
 
 
-        // 1. set best result to all containers
+        // 1. copy best result to all containers
         for(int j = 0; j < NUMBER_OF_NEIGHBOURS; j++) {
             copyAmbulanceVector(iterations_best_solution, potential_solutions[j]);
         }
