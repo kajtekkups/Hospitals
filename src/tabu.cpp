@@ -54,6 +54,7 @@ operation_cost TabuSearch::ObjectiveFunction(std::vector<Ambulance*> const &solu
 
     for (const auto ambulance : solution){
         Point ambulance_location = {ambulance->getAmbulanceLocationX(), ambulance->getAmbulanceLocationY(), 0};
+        int patient_order = 1;
 
         for (const auto patient : ambulance->getOrder()){
             if (patient == nullptr){
@@ -70,10 +71,17 @@ operation_cost TabuSearch::ObjectiveFunction(std::vector<Ambulance*> const &solu
             const int amb_to_pat_time = BFS(city, ambulance_location, patient_location);
             const int pat_to_hosp_time = BFS(city, patient_location, hospital_location);
 
-            const int patient_priority = patient->getPriority();
-            final_cost = final_cost + patient_priority * (patient_time + amb_to_pat_time) + pat_to_hosp_time;
+            const float patient_priority = patient->getPriority();
+
+            final_cost = final_cost + static_cast<int>((patient_priority * static_cast<float>(patient_order)) * static_cast<float>(patient_time + amb_to_pat_time + pat_to_hosp_time));
 
             ambulance_location = hospital_location;
+            patient_order++;
+            if(patient_order == 3 || patient_order == 4) {
+                final_cost = static_cast<int>(static_cast<float>(final_cost) *  1.5);
+            } else if(patient_order > 4) {
+                final_cost = static_cast<int>(static_cast<float>(final_cost) *  4);
+            }
         }
     }
     return final_cost;

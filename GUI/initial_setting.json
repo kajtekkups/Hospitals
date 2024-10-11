@@ -35,70 +35,70 @@
         "patient_1": {
             "x": 3,
             "y": 24,
-            "time": 10,
-            "priority":2,
+            "time": 16,
+            "priority":0.5,
             "specialization_grade": [6,0,0,0,0,0,4,0,0,0,0,0,0]
         },
         "patient_2": {
             "x": 1,
             "y": 1,
-            "time": 30,
-            "priority":2,
+            "time": 19,
+            "priority":0.4,
             "specialization_grade": [0,0,4,0,0,0,0,0,0,0,0,1,0]
         },
         "patient_3": {
             "x": 0,
             "y": 4,
             "time": 20,
-            "priority":5,
+            "priority":0.7,
             "specialization_grade": [0,0,0,5,0,0,0,0,0,0,9,0,0]
         },
         "patient_4": {
             "x": 19,
             "y": 19,
-            "time": 10,
-            "priority": 3,
+            "time": 18,
+            "priority": 1,
             "specialization_grade": [0,5,0,0,0,0,0,0,0,0,0,0,0]
         },
         "patient_5": {
             "x": 1,
             "y": 4,
-            "time": 5,
-            "priority": 2,
+            "time": 25,
+            "priority": 0.6,
             "specialization_grade": [0,0,0,0,6,0,9,0,0,0,0,0,0]
         },
         "patient_6": {
             "x": 0,
             "y": 6,
-            "time": 30,
-            "priority": 6,
+            "time": 22,
+            "priority": 0.7,
             "specialization_grade": [0,0,0,0,0,0,6,0,0,3,0,0,0]
         },
         "patient_7": {
             "x": 22,
             "y": 9,
-            "time": 30,
-            "priority": 4,
+            "time": 21,
+            "priority": 0.8,
             "specialization_grade": [0,0,0,0,0,0,0,0,0,0,6,0,0]
         },
         "patient_8": {
             "x": 0,
             "y": 4,
             "time": 20,
-            "priority": 2,
+            "priority": 0.4,
             "specialization_grade": [0,0,0,0,8,8,0,0,0,0,0,0,0]
         },
         "patient_9": {
             "x": 17,
             "y": 5,
             "time": 25,
-            "priority": 4,
+            "priority": 0.5,
             "specialization_grade": [0,4,0,0,0,0,0,4,0,0,0,0,0]
         },
         "patient_10": {
             "x": 1,
             "y": 4,
-            "time": 5,
+            "time": 15,
             "priority": 1,
             "specialization_grade": [6,0,0,0,0,0,0,0,6,0,0,0,0]
         },
@@ -106,35 +106,35 @@
             "x": 0,
             "y": 6,
             "time": 17,
-            "priority": 5,
+            "priority": 0.8,
             "specialization_grade": [0,0,4,4,0,0,0,0,0,0,0,0,0]
         },
         "patient_12": {
             "x": 4,
             "y": 29,
             "time": 23,
-            "priority": 4,
+            "priority": 0.4,
             "specialization_grade": [7,0,0,0,0,0,0,0,0,7,0,0,0]
         },
         "patient_13": {
             "x": 12,
             "y": 23,
-            "time": 6,
-            "priority": 1,
+            "time": 16,
+            "priority": 0.9,
             "specialization_grade": [0,0,0,5,0,0,0,2,0,0,0,0,0]
         },
         "patient_14": {
             "x": 0,
             "y": 3,
-            "time": 51,
-            "priority": 8,
+            "time": 25,
+            "priority": 0.4,
             "specialization_grade": [0,0,9,0,0,0,9,0,0,0,0,0,0]
         },
         "patient_15": {
             "x": 20,
             "y": 13,
-            "time": 50,
-            "priority": 8,
+            "time": 10,
+            "priority": 0.4,
             "specialization_grade": [0,9,0,0,0,9,0,0,0,0,0,0,0]
         },
         "patient_16": {
@@ -147,29 +147,29 @@
         "patient_17": {
             "x": 13,
             "y": 2,
-            "time": 41,
-            "priority": 3,
+            "time": 25,
+            "priority": 0.6,
             "specialization_grade": [0,0,0,0,4,4,0,0,0,0,0,0,0]
         },
         "patient_18": {
             "x": 11,
             "y": 29,
             "time": 21,
-            "priority": 7,
+            "priority": 0.7,
             "specialization_grade": [0,0,5,0,0,4,0,0,8,0,0,0,0]
         },
         "patient_19": {
             "x": 0,
             "y": 3,
             "time": 16,
-            "priority": 4,
+            "priority": 0.4,
             "specialization_grade": [0,0,2,0,0,0,2,0,0,0,0,0,0]
         },
         "patient_20": {
             "x": 22,
             "y": 29,
             "time": 19,
-            "priority": 6,
+            "priority": 0.6,
             "specialization_grade": [0,0,0,0,0,0,0,0,0,0,0,0,9]
         }
     },
