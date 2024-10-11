@@ -50,7 +50,7 @@ class GUI(tk.Tk):
 
         #frontend
         super().__init__()
-        self.title("Algorytm TS") # Ustawienie tytułu okna
+        self.title("Tabu Search Algorithm") # Ustawienie tytułu okna
         self.geometry("1000x800") # Ustawienie rozmiarów okna
 
         # Utwórz zakładki
@@ -169,21 +169,21 @@ class GUI(tk.Tk):
 
     def dodaj_pola_karty1(self):
         # max_liczba_iteracji
-        self.label_max_liczba_iteracji = tk.Label(self.karta1, text="maksymalna liczba iteracji")
+        self.label_max_liczba_iteracji = tk.Label(self.karta1, text="Maximum number of iterations")
         self.label_max_liczba_iteracji.grid(row=0, column=1)  # Przesunięcie napisu
         # pole do wpisania wartosci
         self.entry_max_liczba_iteracji = tk.Entry(self.karta1)
         self.entry_max_liczba_iteracji.grid(row=0, column=0, padx=10, pady=10)
 
         # dlugosc listy tabu
-        self.label_dlugosc_listy_tabu = tk.Label(self.karta1, text="dlugosc listy tabu")
+        self.label_dlugosc_listy_tabu = tk.Label(self.karta1, text="tabu list lenght")
         self.label_dlugosc_listy_tabu.grid(row=1, column=1)  # Przesunięcie napisu
         # pole do wpisania wartosci
         self.entry_dlugosc_listy_tabu = tk.Entry(self.karta1)
         self.entry_dlugosc_listy_tabu.grid(row=1, column=0, padx=10, pady=10)
 
         # kryterium aspiracji
-        self.label_kryterium_aspiracji = tk.Label(self.karta1, text="kryterium aspiracji")
+        self.label_kryterium_aspiracji = tk.Label(self.karta1, text="Aspiration criteria")
         self.label_kryterium_aspiracji.grid(row=2, column=1)  # Przesunięcie napisu
         # pole do wpisania wartosci
         self.entry_kryterium_aspiracji = tk.Entry(self.karta1)
@@ -192,26 +192,26 @@ class GUI(tk.Tk):
         # wybor sasiedztwa
         self.przycisk_sasiedztwo1 = tk.BooleanVar()
         self.przycisk_sasiedztwo1.set(False)
-        self.przycisk_sasiedztwo1_okno = tk.Checkbutton(self.karta1, text="Sasiedztwo 1", variable=self.przycisk_sasiedztwo1)
+        self.przycisk_sasiedztwo1_okno = tk.Checkbutton(self.karta1, text="Neighborhood 1", variable=self.przycisk_sasiedztwo1)
         self.przycisk_sasiedztwo1_okno.grid(row=4, column=0, pady=10)
 
         self.przycisk_sasiedztwo2 = tk.BooleanVar()
         self.przycisk_sasiedztwo2.set(False)
-        self.przycisk_sasiedztwo2_okno = tk.Checkbutton(self.karta1, text="Sasiedztwo 2", variable=self.przycisk_sasiedztwo2)
+        self.przycisk_sasiedztwo2_okno = tk.Checkbutton(self.karta1, text="Neighborhood 2", variable=self.przycisk_sasiedztwo2)
         self.przycisk_sasiedztwo2_okno.grid(row=5, column=0, pady=10)
 
         self.przycisk_sasiedztwo3 = tk.BooleanVar()
         self.przycisk_sasiedztwo3.set(False)
-        self.przycisk_sasiedztwo3_okno = tk.Checkbutton(self.karta1, text="Sasiedztwo 3", variable=self.przycisk_sasiedztwo3)
+        self.przycisk_sasiedztwo3_okno = tk.Checkbutton(self.karta1, text="Neighborhood 3", variable=self.przycisk_sasiedztwo3)
         self.przycisk_sasiedztwo3_okno.grid(row=6, column=0, pady=10)
 
         self.przycisk_sasiedztwo4 = tk.BooleanVar()
         self.przycisk_sasiedztwo4.set(False)
-        self.przycisk_sasiedztwo4_okno = tk.Checkbutton(self.karta1, text="Sasiedztwo 4", variable=self.przycisk_sasiedztwo4)
+        self.przycisk_sasiedztwo4_okno = tk.Checkbutton(self.karta1, text="Neighborhood 4", variable=self.przycisk_sasiedztwo4)
         self.przycisk_sasiedztwo4_okno.grid(row=7, column=0,  pady=10)
 
         # przycisk zapisu danych
-        self.przycisk_karta1 = tk.Button(self.karta1, text="Zapisz", command=self.uruchom_algorytm)
+        self.przycisk_karta1 = tk.Button(self.karta1, text="Run", command=self.uruchom_algorytm)
         self.przycisk_karta1.grid(row=50, column=0, padx=10, pady=10)
 
 
@@ -268,7 +268,7 @@ class GUI(tk.Tk):
         self.ramka = tk.Frame(self.karta1, bd=1, relief=tk.GROOVE)
         self.ramka.grid(row=0, column=151, padx=10, pady=10)
         #napis
-        self.napis_iteracje = tk.Label(self.ramka, text="liczba iteracji")
+        self.napis_iteracje = tk.Label(self.ramka, text="number of iterations")
         self.napis_iteracje.grid(padx=10)
         #wartosc
         self.etykieta_liczba_iteracji = tk.IntVar()
@@ -280,7 +280,7 @@ class GUI(tk.Tk):
         self.ramka_aspiracje = tk.Frame(self.karta1, bd=1, relief=tk.GROOVE)
         self.ramka_aspiracje.grid(row=1, column=151, padx=10, pady=10)
         #napis
-        self.napis_aspiracje = tk.Label(self.ramka_aspiracje, text="liczba uzyc kryt aspiracji")
+        self.napis_aspiracje = tk.Label(self.ramka_aspiracje, text="Aspiration criteria usage number")
         self.napis_aspiracje.grid(padx=10)
         #wartosc
         self.etykieta_liczba_aspiracji = tk.IntVar()
@@ -292,7 +292,7 @@ class GUI(tk.Tk):
         self.ramka_czas_wykonania = tk.Frame(self.karta1, bd=1, relief=tk.GROOVE)
         self.ramka_czas_wykonania.grid(row=2, column=151, padx=10, pady=10)
         #napis
-        self.napis_czas_wykonania = tk.Label(self.ramka_czas_wykonania, text="czas wykonania [s]")
+        self.napis_czas_wykonania = tk.Label(self.ramka_czas_wykonania, text="time [s]")
         self.napis_czas_wykonania.grid(padx=10)
         #wartosc
         self.etykieta_czas_wykonania = tk.IntVar()
@@ -304,7 +304,7 @@ class GUI(tk.Tk):
         self.ramka_najlepszy_wynik_iteracja = tk.Frame(self.karta1, bd=1, relief=tk.GROOVE)
         self.ramka_najlepszy_wynik_iteracja.grid(row=3, column=151, padx=10, pady=10)
         #napis
-        self.napis_najlepszy_wynik_iteracja = tk.Label(self.ramka_najlepszy_wynik_iteracja, text="iteracja z najlepszym wynikiem")
+        self.napis_najlepszy_wynik_iteracja = tk.Label(self.ramka_najlepszy_wynik_iteracja, text="Iteration with best result")
         self.napis_najlepszy_wynik_iteracja.grid(padx=10)
         #wartosc
         self.etykieta_najlepszy_wynik_iteracja = tk.IntVar()
@@ -316,7 +316,7 @@ class GUI(tk.Tk):
         self.ramka_najlepszy_wynik = tk.Frame(self.karta1, bd=1, relief=tk.GROOVE)
         self.ramka_najlepszy_wynik.grid(row=4, column=151, padx=10, pady=10)
         #napis
-        self.napis_najlepszy_wynik = tk.Label(self.ramka_najlepszy_wynik, text="najlepszy wynik")
+        self.napis_najlepszy_wynik = tk.Label(self.ramka_najlepszy_wynik, text="best result")
         self.napis_najlepszy_wynik.grid(padx=10)
         #wartosc
         self.etykieta_najlepszy_wynik = tk.IntVar()
@@ -402,9 +402,9 @@ class GUI(tk.Tk):
         wykres = fig.add_subplot(1, 1, 1)
         wykres.plot(dane_x, dane_y, label='Wartosci funkcji celu',  linewidth=0.5)
 
-        wykres.set_title('Wartosci funkcji celu')
-        wykres.set_xlabel('kolejne rozwiazania')
-        wykres.set_ylabel('Wartość funkcji celu')
+        wykres.set_title('Objective function chart')
+        wykres.set_xlabel('Solutions')
+        wykres.set_ylabel('Objective function value')
 
         # Konwersja figury na Tkinter PhotoImage
         canvas = FigureCanvasTkAgg(fig, master=self.karta2)

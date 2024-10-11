@@ -60,11 +60,11 @@ public:
 
     static operation_cost ObjectiveFunction(std::vector<Ambulance*> const &solution);
 
-    std::tuple<std::map<Ambulance, swap_patient_index>, operation_cost> FirstNeighbour(std::vector<Ambulance*>& solution, int* aspiration_on);
+    std::tuple<std::map<Ambulance, swap_patient_index>, operation_cost> FirstNeighbour(std::vector<Ambulance*>& solution);
 
-    std::tuple<std::map<Ambulance, swap_patient_index>, operation_cost> SecondNeighbour(std::vector<Ambulance*>& solution, int* aspiration_on);
+    std::tuple<std::map<Ambulance, swap_patient_index>, operation_cost> SecondNeighbour(std::vector<Ambulance*>& solution);
 
-    NeighbourSelectResult NeighbourSelect(std::array<std::vector<Ambulance*>, NUMBER_OF_NEIGHBOURS>& solutions, int* aspiration_on);
+    NeighbourSelectResult NeighbourSelect(std::array<std::vector<Ambulance*>, NUMBER_OF_NEIGHBOURS>& solutions);
 
     static void createFirstSolution();
 

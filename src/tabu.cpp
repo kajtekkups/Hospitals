@@ -89,7 +89,7 @@ operation_cost TabuSearch::ObjectiveFunction(std::vector<Ambulance*> const &solu
 
 //chose 2 random ambulances and change random patients
 // ReSharper disable once CppParameterMayBeConstPtrOrRef
-std::tuple<std::map<Ambulance, swap_patient_index>, operation_cost> TabuSearch::FirstNeighbour(std::vector<Ambulance*>& solution, int* aspiration_on) {
+std::tuple<std::map<Ambulance, swap_patient_index>, operation_cost> TabuSearch::FirstNeighbour(std::vector<Ambulance*>& solution) {
     std::map<Ambulance, swap_patient_index> neigh_swaped;
     operation_cost first_neighbour_cost;
 
@@ -113,16 +113,22 @@ std::tuple<std::map<Ambulance, swap_patient_index>, operation_cost> TabuSearch::
         std::pair<Ambulance, swap_patient_index> pair1(*solution[ambulance_idx1], patient_idx1);
         std::pair<Ambulance, swap_patient_index> pair2(*solution[ambulance_idx2], patient_idx2);
 
+        const operation_cost previous_cost = ObjectiveFunction(solution);
+        swapPatients(*solution[ambulance_idx1], *solution[ambulance_idx2], patient_idx1, patient_idx2);
         if(!Tabu.checkIfInTabu(pair1, pair2)) {
-            swapPatients(*solution[ambulance_idx1], *solution[ambulance_idx2], patient_idx1, patient_idx2);
             first_neighbour_cost = ObjectiveFunction(solution);
             neigh_swaped.insert(std::make_pair(*solution[ambulance_idx1],patient_idx1));
             neigh_swaped.insert(std::make_pair(*solution[ambulance_idx2],patient_idx2));
             break;
-        } else if constexpr (false) {
-            // TODO: uzupelnic aspiration criteria
-            //GUI::aspiration_criterion != 0
+        } else if(previous_cost - ObjectiveFunction(solution) > GUI::aspiration_criterion) {
+            GUI::aspiration_criterion_use_number++;
+
+            first_neighbour_cost = ObjectiveFunction(solution);
+            neigh_swaped.insert(std::make_pair(*solution[ambulance_idx1],patient_idx1));
+            neigh_swaped.insert(std::make_pair(*solution[ambulance_idx2],patient_idx2));
+            break;
         }
+        swapPatients(*solution[ambulance_idx1], *solution[ambulance_idx2], patient_idx1, patient_idx2);
     }
 
     return std::make_tuple(neigh_swaped, first_neighbour_cost);
@@ -130,7 +136,7 @@ std::tuple<std::map<Ambulance, swap_patient_index>, operation_cost> TabuSearch::
 
 
 // move patient from one ambulance to another
-std::tuple<std::map<Ambulance, swap_patient_index>, operation_cost> TabuSearch::SecondNeighbour(std::vector<Ambulance*>& solution, int* aspiration_on) {
+std::tuple<std::map<Ambulance, swap_patient_index>, operation_cost> TabuSearch::SecondNeighbour(std::vector<Ambulance*>& solution) {
     std::map<Ambulance, swap_patient_index> neigh_swaped;
     operation_cost second_neighbour_cost;
 
@@ -173,20 +179,20 @@ std::tuple<std::map<Ambulance, swap_patient_index>, operation_cost> TabuSearch::
 
 
 //trzeba uzyc kilku sasiedztw naraz
-NeighbourSelectResult TabuSearch::NeighbourSelect(std::array<std::vector<Ambulance*>, NUMBER_OF_NEIGHBOURS>& solutions, int* aspiration_on) {
+NeighbourSelectResult TabuSearch::NeighbourSelect(std::array<std::vector<Ambulance*>, NUMBER_OF_NEIGHBOURS>& solutions) {
     std::tuple<std::map<Ambulance, swap_patient_index>, operation_cost> chosen_neighbour;
     std::tuple<std::map<Ambulance, swap_patient_index>, operation_cost> temporary_neighbour;
     best_result_solution index;
 
     //1. neighbour
     if(GUI::neighborhood_selection_method[FIRST_NEIGH]) {
-        chosen_neighbour = FirstNeighbour(solutions[FIRST_NEIGH], aspiration_on);
+        chosen_neighbour = FirstNeighbour(solutions[FIRST_NEIGH]);
         index = FIRST_NEIGH;
     }
 
     //2. neighbour
     if(GUI::neighborhood_selection_method[SECOND_NEIGH]) {
-        temporary_neighbour = FirstNeighbour(solutions[SECOND_NEIGH], aspiration_on);
+        temporary_neighbour = FirstNeighbour(solutions[SECOND_NEIGH]);
         if(std::get<1>(chosen_neighbour) > std::get<1>(temporary_neighbour)) {
             chosen_neighbour = temporary_neighbour;
             index = SECOND_NEIGH;
@@ -195,7 +201,7 @@ NeighbourSelectResult TabuSearch::NeighbourSelect(std::array<std::vector<Ambulan
 
     //3. Neighbour
     if(GUI::neighborhood_selection_method[THIRD_NEIGH]) {
-        temporary_neighbour = SecondNeighbour(solutions[THIRD_NEIGH], aspiration_on);
+        temporary_neighbour = SecondNeighbour(solutions[THIRD_NEIGH]);
         if(std::get<1>(chosen_neighbour) > std::get<1>(temporary_neighbour)) {
             chosen_neighbour = temporary_neighbour;
             index = THIRD_NEIGH;
@@ -203,7 +209,7 @@ NeighbourSelectResult TabuSearch::NeighbourSelect(std::array<std::vector<Ambulan
     }
 
     if(GUI::neighborhood_selection_method[FOURTH_NEIGH]) {
-        temporary_neighbour = SecondNeighbour(solutions[FOURTH_NEIGH], aspiration_on);
+        temporary_neighbour = SecondNeighbour(solutions[FOURTH_NEIGH]);
         if(std::get<1>(chosen_neighbour) > std::get<1>(temporary_neighbour)) {
             chosen_neighbour = temporary_neighbour;
             index = FOURTH_NEIGH;
@@ -252,8 +258,6 @@ std::vector<Ambulance*> TabuSearch::TabuSearchAlghoritm() {
     for (int i = 0; i < GUI::max_iteration; i++){
         GUI::iterations_number++;
 
-        int aspiration_on[NUMBER_OF_NEIGHBOURS] = {0};
-
 
         // 1. set best result to all containers
         for(int j = 0; j < NUMBER_OF_NEIGHBOURS; j++) {
@@ -261,7 +265,7 @@ std::vector<Ambulance*> TabuSearch::TabuSearchAlghoritm() {
         }
 
         // 2. find new solutions
-        NeighbourSelectResult best_temporary_solution = NeighbourSelect(potential_solutions, aspiration_on);
+        NeighbourSelectResult best_temporary_solution = NeighbourSelect(potential_solutions);
 
 
         // 3. chose best solutions in this iteration
